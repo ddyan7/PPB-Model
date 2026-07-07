@@ -11,6 +11,7 @@ In the container `src/` is on PYTHONPATH and PPB_BUNDLE points at the bundle.
 from __future__ import annotations
 
 import os
+import sys
 from pathlib import Path
 
 import numpy as np
@@ -20,7 +21,14 @@ from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
-from ppb_model.predict import load_bundle, predict_smiles
+# Make `ppb_model` importable without requiring PYTHONPATH to be set by hand:
+# the library lives in ../src relative to this file (the container sets
+# PYTHONPATH too, so this is a no-op there).
+_SRC = Path(__file__).resolve().parent.parent / "src"
+if _SRC.is_dir() and str(_SRC) not in sys.path:
+    sys.path.insert(0, str(_SRC))
+
+from ppb_model.predict import load_bundle, predict_smiles  # noqa: E402
 
 MAX_BATCH = 200
 HERE = Path(__file__).resolve().parent

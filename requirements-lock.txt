@@ -19,7 +19,7 @@ pandas==3.0.3
 pillow==12.3.0
 pluggy==1.6.0
 # Editable install with no version control (ppb-model==0.1.0)
--e c:\users\dandan\my drive\portfolio\projects\ppb model
+-e c:\users\dandan\my drive\portfolio\projects\ppb-model
 Pygments==2.20.0
 pyparsing==3.3.2
 pytest==9.1.1
