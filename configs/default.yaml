@@ -1,0 +1,58 @@
+# Default configuration for the PPB prediction pipeline.
+# All paths are relative to the project root unless absolute.
+
+project:
+  name: ppb-ppbr-az
+  seed: 42
+
+data:
+  raw_csv: data/raw/ppbr_az.csv
+  smiles_col: Drug
+  target_col: Y            # PPB % bound (0-100) in the AstraZeneca file
+  id_col: Drug_ID
+  species_col: Species
+  species_filter: "Homo sapiens"   # primary scope: human-only (n=1614)
+  target_units: percent_bound      # one of: percent_bound | fraction_bound | fraction_unbound
+
+standardisation:
+  strip_salts: true          # keep largest organic parent fragment
+  neutralise_charges: true   # standardise protonation where unambiguous
+  keep_stereo: true          # preserve stereochemistry in canonical SMILES
+  remove_mixtures: true      # drop multi-component records that are not simple salts
+
+target:
+  # Candidate transformations compared in Stage 3; final choice recorded in MODELLING_PLAN.md
+  transform: logit           # one of: none | fraction_unbound | log_fu | logit | lnKa | clipped
+  epsilon: 0.001             # boundary guard for logit/log at 0% and 100% (in fraction units)
+  clip_percent: [0.1, 99.9]  # assay-plausible clipping bounds before transformation
+
+split:
+  method: scaffold           # primary: Bemis-Murcko scaffold; secondary experiment: random
+  train_frac: 0.70
+  valid_frac: 0.15
+  test_frac: 0.15
+  seed: 42
+  n_repeats: 5               # repeated scaffold splits for robustness (Stage 11)
+
+features:
+  descriptors: true
+  morgan:
+    use: true
+    radius: 2                # radius 3 also evaluated in ablation
+    n_bits: 2048             # 1024 also evaluated in ablation
+  maccs: true
+  hybrid: true               # descriptors + fingerprints concatenated
+  descriptor_variance_threshold: 1.0e-8
+  descriptor_corr_threshold: 0.95
+
+evaluation:
+  primary_metric: MAE_percent            # headline, comparable to literature
+  high_binding_threshold_percent: 90.0   # decisive high-binding subset
+  binding_bands_percent: [50, 80, 90, 95, 99]
+  bootstrap_n: 1000
+
+tuning:
+  method: optuna
+  n_trials: 50
+  cv_folds: 5
+  seed: 42

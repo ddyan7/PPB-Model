@@ -1,0 +1,20 @@
+# Data artefacts (keep raw snapshot only; regenerate the rest)
+data/interim/
+data/processed/
+data/raw/
+data/splits/
+models/
+reports/
+logs/
+*.log
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Never commit the venv (it lives outside Drive anyway)
+.venv/
+venv/

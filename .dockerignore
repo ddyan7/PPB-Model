@@ -1,0 +1,24 @@
+# Keep the build context (and image) small — copy only what serving needs.
+data/
+reports/
+logs/
+tests/
+configs/
+scripts/
+.pytest_cache/
+**/__pycache__/
+*.pyc
+
+# Ship only the lean bundle; exclude the large/alternate ones.
+models/final_consensus.joblib
+models/final_consensus_ppbr_only.joblib
+models/final_xgb_hybrid_ppbr_only.joblib
+models/tuned_members/
+
+# Dev / docs cruft
+.git/
+.gitignore
+*.md
+!README-Spaces.md
+environment.yml
+requirements-lock.txt

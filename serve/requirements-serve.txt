@@ -1,0 +1,12 @@
+# Inference-only dependencies for the PPB web service.
+# Deliberately omits training-only libs (optuna, matplotlib, pytest) and pyyaml,
+# since the ppb_model.predict path does not import them.
+fastapi>=0.110
+uvicorn[standard]>=0.29
+rdkit>=2023.9
+numpy>=1.26
+pandas>=2.0
+scikit-learn>=1.4
+xgboost>=2.0
+scipy>=1.11
+joblib>=1.3

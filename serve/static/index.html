@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>PPB Predictor — Plasma Protein Binding from SMILES</title>
+<style>
+  :root { color-scheme: light dark; --edge: #d0d7de; --muted: #656d76; --accent: #2563eb; }
+  * { box-sizing: border-box; }
+  body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+         max-width: 900px; margin: 0 auto; padding: 1.5rem; line-height: 1.5; }
+  h1 { margin: 0 0 .25rem; font-size: 1.5rem; }
+  p.sub { color: var(--muted); margin: 0 0 1.25rem; }
+  textarea { width: 100%; min-height: 140px; font-family: ui-monospace, monospace;
+             font-size: .9rem; padding: .6rem; border: 1px solid var(--edge); border-radius: 8px; }
+  .row { display: flex; gap: .75rem; align-items: center; flex-wrap: wrap; margin: .6rem 0 1rem; }
+  button { background: var(--accent); color: #fff; border: 0; border-radius: 8px;
+           padding: .55rem 1.1rem; font-size: .95rem; cursor: pointer; }
+  button:disabled { opacity: .6; cursor: default; }
+  .link { background: none; color: var(--accent); padding: 0; font-size: .85rem; text-decoration: underline; }
+  table { border-collapse: collapse; width: 100%; font-size: .88rem; margin-top: 1rem; }
+  th, td { border: 1px solid var(--edge); padding: .45rem .55rem; text-align: left; }
+  th { background: rgba(127,127,127,.08); }
+  td.smiles { font-family: ui-monospace, monospace; word-break: break-all; }
+  .pill { display: inline-block; padding: .1rem .5rem; border-radius: 999px; font-size: .78rem; font-weight: 600; }
+  .in { background: #dcfce7; color: #166534; }
+  .out { background: #fee2e2; color: #991b1b; }
+  .bad { background: #fef9c3; color: #854d0e; }
+  .note { color: var(--muted); font-size: .82rem; margin-top: 1rem; }
+  .err { color: #991b1b; font-size: .9rem; }
+</style>
+</head>
+<body>
+  <h1>PPB Predictor</h1>
+  <p class="sub">Predict human plasma protein binding (% bound) from a SMILES string.
+     One SMILES per line.</p>
+
+  <textarea id="input" spellcheck="false" placeholder="CC(=O)Oc1ccccc1C(=O)O"></textarea>
+  <div class="row">
+    <button id="go">Predict</button>
+    <button class="link" id="example" type="button">Load examples</button>
+    <span id="status" class="sub"></span>
+  </div>
+
+  <div id="error" class="err"></div>
+  <div id="results"></div>
+
+  <p class="note">
+    <strong>Always check the “In domain?” column.</strong> Predictions for compounds
+    outside the model’s applicability domain (low similarity to training data) are
+    unreliable. Rows with a standardisation error return no prediction.
+  </p>
+
+<script>
+const EXAMPLES = [
+  "CC(=O)Oc1ccccc1C(=O)O",          // aspirin
+  "CC(C)Cc1ccc(cc1)C(C)C(=O)O",     // ibuprofen
+  "CN1C=NC2=C1C(=O)N(C(=O)N2C)C",   // caffeine
+];
+
+const $ = (id) => document.getElementById(id);
+
+$("example").addEventListener("click", () => { $("input").value = EXAMPLES.join("\n"); });
+
+$("go").addEventListener("click", async () => {
+  const smiles = $("input").value.split("\n").map(s => s.trim()).filter(Boolean);
+  $("error").textContent = "";
+  $("results").innerHTML = "";
+  if (!smiles.length) { $("error").textContent = "Enter at least one SMILES."; return; }
+
+  $("go").disabled = true;
+  $("status").textContent = "Predicting…";
+  try {
+    const resp = await fetch("/api/predict", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ smiles }),
+    });
+    if (!resp.ok) {
+      const body = await resp.json().catch(() => ({}));
+      throw new Error(body.detail || `Request failed (${resp.status})`);
+    }
+    const data = await resp.json();
+    render(data.predictions);
+    $("status").textContent = `${data.count} prediction(s)`;
+  } catch (e) {
+    $("error").textContent = e.message;
+    $("status").textContent = "";
+  } finally {
+    $("go").disabled = false;
+  }
+});
+
+function fmt(x, digits) {
+  return (x === null || x === undefined) ? "—" : Number(x).toFixed(digits);
+}
+
+function domainCell(row) {
+  if (row.status !== "ok") return `<span class="pill bad">error</span>`;
+  return row.in_applicability_domain
+    ? `<span class="pill in">yes</span>`
+    : `<span class="pill out">no</span>`;
+}
+
+function render(rows) {
+  const head = `<tr>
+    <th>SMILES</th><th>PPB (% bound)</th><th>Fraction unbound</th>
+    <th>Max train similarity</th><th>In domain?</th><th>Status</th></tr>`;
+  const body = rows.map(r => `<tr>
+    <td class="smiles">${escapeHtml(r.input_smiles)}</td>
+    <td>${fmt(r.predicted_ppb, 1)}</td>
+    <td>${fmt(r.predicted_fraction_unbound, 3)}</td>
+    <td>${fmt(r.max_training_similarity, 2)}</td>
+    <td>${domainCell(r)}</td>
+    <td>${escapeHtml(r.status)}</td></tr>`).join("");
+  $("results").innerHTML = `<table>${head}${body}</table>`;
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c =>
+    ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+}
+</script>
+</body>
+</html>
