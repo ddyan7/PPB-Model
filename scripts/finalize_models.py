@@ -27,7 +27,7 @@ from ppb_model.utils import Paths, get_logger, load_config, set_seed
 MEMBER_REPS = {"xgb_hybrid": "hybrid", "rf_desc": "descriptors", "hgb_desc": "descriptors"}
 
 
-def run(config_path: str) -> None:
+def run(config_path: str, lean_only: bool = False) -> None:
     cfg = load_config(config_path)
     set_seed(cfg["project"]["seed"])
     paths = Paths.create()

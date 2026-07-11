@@ -110,7 +110,7 @@ def run(config_path: str, data_path: str) -> None:
 def main() -> None:
     ap = argparse.ArgumentParser(description="Head-to-head vs Ingle published models.")
     ap.add_argument("--config", default="configs/default.yaml")
-    ap.add_argument("--data", default="PPB_Datasets/ppb_usable_dataset.csv")
+    ap.add_argument("--data", default="data/raw/ppb_usable_dataset.csv")
     args = ap.parse_args()
     run(args.config, args.data)
 

@@ -39,9 +39,13 @@ MEMBERS = [("xgb_hybrid", "xgb", "hybrid"), ("rf_desc", "rf", "descriptors"),
            ("hgb_desc", "hgb", "descriptors")]
 
 
-def _load_ingle_nonoverlap(paths):
+def _load_ingle_nonoverlap(config: dict[str, Any], paths):
     """Standardise Ingle, drop PPBR_AZ InChIKey overlaps; return frame + features (computed once)."""
-    raw = pd.read_csv(resolve_path("PPB_Datasets/ppb_usable_dataset.csv"))
+    dcfg = config["data"]
+    ingle_data_path = resolve_path(dcfg["ingle_data_csv"])
+    if not ingle_data_path.is_file():
+        raise FileNotFoundError(f"Ingle dataset not found: {ingle_data_path}")
+    raw = pd.read_csv(ingle_data_path)
     ppbr_keys = set(pd.read_csv(paths.processed / "ppbr_az_human_clean.csv")["inchikey"].dropna())
     recs = []
     for r in raw.itertuples(index=False):
@@ -100,7 +104,7 @@ def run(config_path: str) -> None:
     aug_params = {k: v["best_params"] for k, v in aug["tuned"].items()}
 
     # Non-overlapping Ingle, features computed once.
-    ingle = _load_ingle_nonoverlap(paths)
+    ingle = _load_ingle_nonoverlap(cfg, paths)
     logger.info("Non-overlapping Ingle compounds: %d", len(ingle))
     ingle_desc, _ = compute_descriptor_matrix(ingle["canonical_smiles"].tolist())
     ingle_morgan = morgan_matrix(ingle["canonical_smiles"].tolist(), m_r, m_b).astype(cache.morgan.dtype)

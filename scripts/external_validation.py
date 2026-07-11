@@ -17,7 +17,7 @@ Outputs:
 
 Usage:
     python scripts/external_validation.py --config configs/default.yaml \
-        --data "PPB_Datasets/ppb_usable_dataset.csv"
+        --data "data/raw/ppb_usable_dataset.csv"
 """
 from __future__ import annotations
 
@@ -129,7 +129,7 @@ def run(config_path: str, data_path: str) -> None:
 def main() -> None:
     ap = argparse.ArgumentParser(description="External validation on the Ingle dataset.")
     ap.add_argument("--config", default="configs/default.yaml")
-    ap.add_argument("--data", default="PPB_Datasets/ppb_usable_dataset.csv")
+    ap.add_argument("--data", default="data/raw/ppb_usable_dataset.csv")
     args = ap.parse_args()
     run(args.config, args.data)
 

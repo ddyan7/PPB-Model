@@ -44,6 +44,9 @@ curl -X POST https://<user>-ppb-predictor.hf.space/api/predict \
 ```
 
 ## Updating later
-Push new commits to the Space repo; it rebuilds on every push. To swap in the
-consensus bundle instead, change `PPB_BUNDLE` in the `Dockerfile` and copy that
-`.joblib` in (note it is ~18 MB).
+Push new commits to the Space repo; it rebuilds on every push. To serve the
+augmented consensus bundle instead (~18 MB, adds an uncertainty score, slightly
+better overall accuracy), change `PPB_BUNDLE` in the `Dockerfile` to
+`models/final_consensus.joblib`, copy that `.joblib` in, and re-run
+`python scripts/export_parity.py` (after pointing its `BUNDLE` at the same file)
+so the parity plot matches.

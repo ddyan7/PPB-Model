@@ -8,26 +8,69 @@
   :root { color-scheme: light dark; --edge: #d0d7de; --muted: #656d76; --accent: #2563eb; }
   * { box-sizing: border-box; }
   body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-         max-width: 900px; margin: 0 auto; padding: 1.5rem; line-height: 1.5; }
+         max-width: 1000px; margin: 0 auto; padding: 1.5rem; line-height: 1.5; }
   h1 { margin: 0 0 .25rem; font-size: 1.5rem; }
   p.sub { color: var(--muted); margin: 0 0 1.25rem; }
-  textarea { width: 100%; min-height: 140px; font-family: ui-monospace, monospace;
+  textarea { width: 100%; min-height: 130px; font-family: ui-monospace, monospace;
              font-size: .9rem; padding: .6rem; border: 1px solid var(--edge); border-radius: 8px; }
-  .row { display: flex; gap: .75rem; align-items: center; flex-wrap: wrap; margin: .6rem 0 1rem; }
+  .row { display: flex; gap: .6rem; align-items: center; flex-wrap: wrap; margin: .6rem 0 1rem; }
   button { background: var(--accent); color: #fff; border: 0; border-radius: 8px;
            padding: .55rem 1.1rem; font-size: .95rem; cursor: pointer; }
+  button.secondary { background: rgba(37,99,235,.10); color: var(--accent); }
   button:disabled { opacity: .6; cursor: default; }
   .link { background: none; color: var(--accent); padding: 0; font-size: .85rem; text-decoration: underline; }
-  table { border-collapse: collapse; width: 100%; font-size: .88rem; margin-top: 1rem; }
-  th, td { border: 1px solid var(--edge); padding: .45rem .55rem; text-align: left; }
-  th { background: rgba(127,127,127,.08); }
-  td.smiles { font-family: ui-monospace, monospace; word-break: break-all; }
-  .pill { display: inline-block; padding: .1rem .5rem; border-radius: 999px; font-size: .78rem; font-weight: 600; }
+  .results-wrap { overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; font-size: .85rem; margin-top: 1rem; }
+  th, td { border: 1px solid var(--edge); padding: .4rem .5rem; text-align: left; white-space: nowrap; }
+  th { background: rgba(127,127,127,.08); cursor: help; }
+  td.smiles { font-family: ui-monospace, monospace; max-width: 220px;
+              overflow: hidden; text-overflow: ellipsis; }
+  td.struct { padding: 2px; }
+  td.struct svg { display: block; width: 120px; height: 80px; }
+  td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  th.driver, td.driver { background: rgba(37,99,235,.09); }
+  td.driver { font-weight: 600; color: var(--accent); }
+  .pill { display: inline-block; padding: .1rem .5rem; border-radius: 999px; font-size: .74rem; font-weight: 600; }
   .in { background: #dcfce7; color: #166534; }
   .out { background: #fee2e2; color: #991b1b; }
   .bad { background: #fef9c3; color: #854d0e; }
+  .b-high { background: #fee2e2; color: #991b1b; }
+  .b-mod  { background: #fef9c3; color: #854d0e; }
+  .b-low  { background: #dbeafe; color: #1e40af; }
   .note { color: var(--muted); font-size: .82rem; margin-top: 1rem; }
   .err { color: #991b1b; font-size: .9rem; }
+  .intro { background: rgba(37,99,235,.06); border: 1px solid var(--edge);
+           border-radius: 10px; padding: .9rem 1.1rem; margin: 0 0 1rem; }
+  .intro h2 { font-size: 1rem; margin: 0 0 .4rem; }
+  .intro p { margin: .4rem 0; font-size: .9rem; }
+  .intro ul { margin: .4rem 0 0; padding-left: 1.2rem; font-size: .88rem; }
+  .intro li { margin: .15rem 0; }
+  details.card { border: 1px solid var(--edge); border-radius: 10px;
+                 padding: .6rem .9rem; margin: 0 0 1.25rem; }
+  details.card summary { cursor: pointer; font-weight: 600; font-size: .95rem; }
+  /* Blue disclosure triangles so the expandable panels read as clickable. */
+  details.card summary::marker,
+  .legend summary::marker { color: var(--accent); }
+  details.card summary::-webkit-details-marker,
+  .legend summary::-webkit-details-marker { color: var(--accent); }
+  details.card p { margin: .45rem 0; font-size: .87rem; }
+  .perf { margin: .6rem 0 .2rem; }
+  .perf h4 { margin: .7rem 0 .35rem; font-size: .8rem; color: var(--muted); font-weight: 600; }
+  #parity { margin: .4rem 0 .2rem; }
+  svg.parity { width: 100%; max-width: 480px; height: auto; display: block; }
+  .legend { margin-top: .7rem; font-size: .8rem; color: var(--muted); }
+  .legend summary { cursor: pointer; font-weight: 600; }
+  .legend-body { margin-top: .4rem; }
+  .legend b { color: inherit; font-weight: 600; }
+  .sketcher { margin: 0 0 1rem; }
+  #jsme_container { border: 1px solid var(--edge); border-radius: 8px; width: 380px; max-width: 100%; }
+  .toolbar { display: flex; gap: .5rem; align-items: center; margin-top: 1rem; }
+  footer { margin-top: 2.25rem; border-top: 1px solid var(--edge);
+           padding-top: 1rem; font-size: .8rem; color: var(--muted); }
+  footer a { color: var(--accent); }
+  .dev { margin: 0 0 .5rem; font-size: .9rem; font-weight: 600; color: inherit; }
+  .credits { margin: .4rem 0 0; padding-left: 1.1rem; }
+  .credits li { margin: .2rem 0; }
 </style>
 </head>
 <body>
@@ -35,21 +78,75 @@
   <p class="sub">Predict human plasma protein binding (% bound) from a SMILES string.
      One SMILES per line.</p>
 
+  <section class="intro">
+    <h2>About this model</h2>
+    <p>Plasma protein binding (PPB) is the fraction of a drug bound to blood
+      proteins. Only the <em>unbound</em> fraction is free to reach its target,
+      so PPB is a key input to effective dose and pharmacokinetics, and accurate prediction is especially challenging for highly bound drugs, such as those with PPB ≥90%.</p>
+    <p>Enter one or more SMILES to get the predicted % bound, the free fraction,
+      and key physicochemical properties. Model provenance and performance are in
+      the panel below.</p>
+    <ul>
+      <li>Returns predicted % bound and the corresponding fraction unbound.</li>
+      <li>Flags whether a compound falls inside the model's <strong>applicability
+        domain</strong> (its similarity to the training data).</li>
+      <li>For research and educational use — not a substitute for experimental
+        measurement.</li>
+    </ul>
+  </section>
+
+  <details class="card" open>
+    <summary>Model details &amp; performance</summary>
+    <div id="modelinfo"><p class="sub">Loading model details…</p></div>
+  </details>
+
   <textarea id="input" spellcheck="false" placeholder="CC(=O)Oc1ccccc1C(=O)O"></textarea>
   <div class="row">
     <button id="go">Predict</button>
+    <button class="secondary" id="draw" type="button">Draw structure</button>
+    <button class="secondary" id="upload" type="button">Upload file</button>
     <button class="link" id="example" type="button">Load examples</button>
+    <input id="file" type="file" accept=".smi,.csv,.txt" hidden />
     <span id="status" class="sub"></span>
   </div>
 
+  <div class="sketcher" id="sketcher" style="display:none">
+    <div id="jsme_container"></div>
+    <div class="row" style="margin:.5rem 0 0">
+      <button class="secondary" id="insert" type="button">Insert SMILES ↑</button>
+      <span class="sub">Draw a molecule, then insert it into the box above.</span>
+    </div>
+  </div>
+
   <div id="error" class="err"></div>
-  <div id="results"></div>
+
+  <div class="toolbar" id="toolbar" style="display:none">
+    <button class="secondary" id="csv" type="button">Download CSV</button>
+    <span id="status2" class="sub"></span>
+  </div>
+  <div class="results-wrap"><div id="results"></div></div>
+  <details class="legend" id="legend" style="display:none">
+    <summary>Column guide</summary>
+    <div class="legend-body">
+      <b>PPB (% bound)</b>: predicted % bound (0–100); banded Low/Moderate/High (≥90% = high).
+      <b>Unbound (%)</b>: 100 − PPB.
+      <b>MW</b> mol. weight · <b>LogP</b> lipophilicity (key PPB driver) · <b>TPSA</b> polar surface area (Å²).
+      <b>Max train similarity</b>: Tanimoto (0–1) to nearest training compound.
+      <b>In domain?</b>: clears the applicability-domain threshold.
+    </div>
+  </details>
 
   <p class="note">
     <strong>Always check the “In domain?” column.</strong> Predictions for compounds
     outside the model’s applicability domain (low similarity to training data) are
     unreliable. Rows with a standardisation error return no prediction.
   </p>
+
+  <footer id="footer">
+    <p class="dev">Developed by
+      <a href="https://github.com/ddyan7" target="_blank" rel="noopener">Dandan Yan</a>.</p>
+    <span id="provenance"></span>
+  </footer>
 
 <script>
 const EXAMPLES = [
@@ -60,12 +157,159 @@ const EXAMPLES = [
 
 const $ = (id) => document.getElementById(id);
 
+// ---- JSME structure editor (loaded from CDN; see <script src> below) ----------
+function jsmeOnLoad() {
+  window.__jsmeReady = true;
+  if (window.__jsmeWantShow) initJsme();
+}
+function initJsme() {
+  if (window.__jsmeApplet || typeof JSApplet === "undefined") return;
+  window.__jsmeApplet = new JSApplet.JSME("jsme_container", "380px", "300px", { options: "newLook" });
+}
+$("draw").addEventListener("click", () => {
+  const box = $("sketcher");
+  const show = box.style.display === "none";
+  box.style.display = show ? "block" : "none";
+  $("draw").textContent = show ? "Hide editor" : "Draw structure";
+  if (show) { window.__jsmeReady ? initJsme() : (window.__jsmeWantShow = true); }
+});
+$("insert").addEventListener("click", () => {
+  if (!window.__jsmeApplet) return;
+  const smi = window.__jsmeApplet.smiles();
+  if (!smi) return;
+  const ta = $("input");
+  ta.value = ta.value.trim() ? ta.value.replace(/\s*$/, "") + "\n" + smi : smi;
+});
+
+// ---- File upload (.smi / .csv / .txt): take first token per line -------------
+$("upload").addEventListener("click", () => $("file").click());
+$("file").addEventListener("change", async (e) => {
+  const f = e.target.files[0];
+  if (!f) return;
+  const text = await f.text();
+  let smis = text.split(/\r?\n/).map(l => l.trim()).filter(Boolean)
+                 .map(l => l.split(/[,\t\s]+/)[0]).filter(Boolean);
+  if (smis.length && /^smiles$/i.test(smis[0])) smis.shift();  // drop a header
+  $("input").value = smis.join("\n");
+  $("status").textContent = `Loaded ${smis.length} SMILES from ${f.name}`;
+  e.target.value = "";
+});
+
 $("example").addEventListener("click", () => { $("input").value = EXAMPLES.join("\n"); });
 
+// ---- Model details panel ------------------------------------------------------
+async function loadModelInfo() {
+  try {
+    const r = await fetch("/api/model-info");
+    if (!r.ok) return;
+    const m = await r.json();
+    $("modelinfo").innerHTML = `
+      <p><strong>Target:</strong> ${m.target}</p>
+      <p><strong>Method:</strong> ${m.method}</p>
+      <p><strong>Training data:</strong> ${m.training_data} — ${m.n_train} molecules.</p>
+      ${perfChart(m.metrics, m.test_set, m.conformal_coverage)}
+      <p><a href="/docs" target="_blank" rel="noopener">REST API documentation</a>
+         · Code: ${m.license_code} · Data: ${m.license_data}</p>`;
+    renderParity();  // fills the #parity container from the held-out test points
+    const repoLink = /github\.com\/.+/.test(m.repo)
+      ? ` · <a href="${m.repo}" target="_blank" rel="noopener">Source code</a>` : "";
+    const credits = (m.attribution || []).map(a => `<li>${a}</li>`).join("");
+    $("provenance").innerHTML =
+      `${m.citation}${repoLink}` +
+      (credits ? `<ul class="credits">${credits}</ul>` : "");
+  } catch (e) { /* non-fatal */ }
+}
+
+// Performance layout: the predicted-vs-observed parity plot (filled by
+// renderParity) plus a one-line error summary. Three metrics don't warrant a
+// chart, so they're stated inline.
+function perfChart(t, testSet, calib) {
+  return `
+    <div class="perf">
+      <h4>Predicted vs. observed, log fraction unbound — held-out ${testSet}</h4>
+      <div id="parity"></div>
+      <p class="sub">Held-out error (% bound): MAE ${t.MAE}, RMSE ${t.RMSE},
+         Spearman ρ ${t.Spearman}; high-binding (≥90%) MAE ${t.high_binding_MAE}.
+         Calibration ${calib}.</p>
+    </div>`;
+}
+
+// Draw a parity (predicted-vs-observed) scatter from the real test points.
+// Colours follow the page text (currentColor) so it works in light/dark.
+async function renderParity() {
+  const el = $("parity");
+  if (!el) return;
+  let data;
+  try {
+    const r = await fetch("/static/parity_test.json");
+    if (!r.ok) return;
+    data = await r.json();
+  } catch (e) { return; }
+
+  // Plot in log10(fraction unbound): fu = (100 - PPB)/100. This is the standard
+  // PPB space — it spreads the dense high-binding region along the diagonal
+  // instead of crushing it into a corner. More negative = more strongly bound.
+  const logfu = ppb => Math.log10(Math.min(1, Math.max(1e-4, (100 - ppb) / 100)));
+  const lo = data.points.map(([o]) => logfu(o));
+  const lp = data.points.map(([, p]) => logfu(p));
+  const axMin = Math.max(-4, Math.floor(Math.min(...lo, ...lp)));  // e.g. -3
+
+  const W = 470, H = 360, ml = 50, mr = 14, mt = 14, mb = 46;
+  const pw = W - ml - mr, ph = H - mt - mb;
+  const sx = v => ml + ((v - axMin) / (0 - axMin)) * pw;   // axMin→left, 0→right
+  const sy = v => mt + (1 - (v - axMin) / (0 - axMin)) * ph; // 0→top, axMin→bottom
+  const ticks = [];
+  for (let t = axMin; t <= 0; t++) ticks.push(t);
+
+  const grid = ticks.map(t => `
+    <line x1="${sx(t)}" y1="${mt}" x2="${sx(t)}" y2="${mt + ph}" class="grid"/>
+    <line x1="${ml}" y1="${sy(t)}" x2="${ml + pw}" y2="${sy(t)}" class="grid"/>
+    <text x="${sx(t)}" y="${mt + ph + 16}" text-anchor="middle" class="ax">${t}</text>
+    <text x="${ml - 8}" y="${sy(t) + 4}" text-anchor="end" class="ax">${t}</text>`).join("");
+  // Opacity encodes distance from training data (max similarity): points less
+  // similar to the training set are fainter, so "how far out of domain" is visible
+  // continuously, while hue (blue/orange) still marks the in/out AD decision.
+  const pts = data.points.map(([o, p, ad, sim]) => {
+    const op = Math.max(0.2, Math.min(0.85, 0.2 + 0.65 * (sim ?? 0)));
+    return `<circle cx="${sx(logfu(p)).toFixed(1)}" cy="${sy(logfu(o)).toFixed(1)}" r="3" ` +
+           `class="pt${ad ? "" : " out"}" style="fill-opacity:${op.toFixed(2)}"/>`;
+  }).join("");
+  const m = data.metrics;
+
+  el.innerHTML = `
+  <svg viewBox="0 0 ${W} ${H}" class="parity" role="img"
+       aria-label="Predicted versus observed log fraction-unbound parity plot on the held-out test set">
+    <style>
+      .parity .grid { stroke: currentColor; stroke-opacity: .12; }
+      .parity .ax { fill: currentColor; font-size: 11px; opacity: .8; }
+      .parity .axlab { fill: currentColor; font-size: 12px; font-weight: 600; }
+      .parity .ident { stroke: #dc2626; stroke-width: 2; stroke-dasharray: 6 5; }
+      .parity .pt { fill: #2563eb; fill-opacity: .5; }
+      .parity .pt.out { fill: #f59e0b; fill-opacity: .65; }
+      .parity .legbox { fill: currentColor; fill-opacity: .06; stroke: currentColor; stroke-opacity: .25; }
+    </style>
+    ${grid}
+    <rect x="${ml}" y="${mt}" width="${pw}" height="${ph}" fill="none" stroke="currentColor" stroke-opacity=".3"/>
+    <line x1="${sx(axMin)}" y1="${sy(axMin)}" x2="${sx(0)}" y2="${sy(0)}" class="ident"/>
+    ${pts}
+    <text class="axlab" x="${ml + pw / 2}" y="${H - 8}" text-anchor="middle">Predicted log₁₀(fu)</text>
+    <text class="axlab" transform="translate(13 ${mt + ph / 2}) rotate(-90)" text-anchor="middle">Observed log₁₀(fu)</text>
+    <rect class="legbox" x="${ml + pw - 150}" y="${mt + ph - 58}" width="140" height="50" rx="6"/>
+    <text class="ax" x="${ml + pw - 140}" y="${mt + ph - 38}">R² = ${m.R2_logfu}</text>
+    <text class="ax" x="${ml + pw - 140}" y="${mt + ph - 20}">RMSE = ${m.RMSE_logfu} log units</text>
+  </svg>
+  <p class="sub" style="margin-top:.3rem">n=${data.n} held-out test, log₁₀(fu);
+     toward −4 (bottom-left) = more strongly bound. Dashed = perfect prediction. Orange =
+     out-of-domain (${m.n_out}; they scatter more, MAE ${m.MAE_out} vs ${m.MAE_in});
+     fainter = less similar to training.</p>`;
+}
+loadModelInfo();
+
+// ---- Prediction ---------------------------------------------------------------
 $("go").addEventListener("click", async () => {
   const smiles = $("input").value.split("\n").map(s => s.trim()).filter(Boolean);
   $("error").textContent = "";
-  $("results").innerHTML = "";
+  clearResults();
   if (!smiles.length) { $("error").textContent = "Enter at least one SMILES."; return; }
 
   $("go").disabled = true;
@@ -81,8 +325,10 @@ $("go").addEventListener("click", async () => {
       throw new Error(body.detail || `Request failed (${resp.status})`);
     }
     const data = await resp.json();
+    window.__lastRows = data.predictions;
     render(data.predictions);
-    $("status").textContent = `${data.count} prediction(s)`;
+    $("status").textContent = "";
+    $("status2").textContent = `${data.count} prediction(s)`;
   } catch (e) {
     $("error").textContent = e.message;
     $("status").textContent = "";
@@ -91,35 +337,114 @@ $("go").addEventListener("click", async () => {
   }
 });
 
+function clearResults() {
+  $("results").innerHTML = "";
+  $("toolbar").style.display = "none";
+  $("legend").style.display = "none";
+  $("status2").textContent = "";
+}
+
 function fmt(x, digits) {
   return (x === null || x === undefined) ? "—" : Number(x).toFixed(digits);
 }
+// fraction (0–1) → percent, preserving null so fmt() can show a dash.
+function pct(x) { return (x === null || x === undefined) ? null : x * 100; }
 
+function band(v) {
+  if (v === null || v === undefined) return "";
+  if (v >= 90) return `<span class="pill b-high">High</span>`;
+  if (v >= 70) return `<span class="pill b-mod">Moderate</span>`;
+  return `<span class="pill b-low">Low</span>`;
+}
 function domainCell(row) {
   if (row.status !== "ok") return `<span class="pill bad">error</span>`;
   return row.in_applicability_domain
     ? `<span class="pill in">yes</span>`
     : `<span class="pill out">no</span>`;
 }
+function structCell(row) {
+  return row.svg ? `<td class="struct">${row.svg}</td>` : `<td class="struct">—</td>`;
+}
 
 function render(rows) {
   const head = `<tr>
-    <th>SMILES</th><th>PPB (% bound)</th><th>Fraction unbound</th>
-    <th>Max train similarity</th><th>In domain?</th><th>Status</th></tr>`;
+    <th title="2D depiction of the standardised molecule">Structure</th>
+    <th title="Input SMILES">SMILES</th>
+    <th title="Predicted percent bound to plasma proteins (0–100%)">PPB (% bound)</th>
+    <th title="Free, pharmacologically active fraction = 100 − PPB">Unbound (%)</th>
+    <th title="Molecular weight (g/mol)">MW</th>
+    <th class="driver" title="Calculated lipophilicity (Crippen MolLogP) — the dominant PPB driver">LogP</th>
+    <th title="Topological polar surface area (Å²)">TPSA</th>
+    <th title="Max Tanimoto similarity (0–1) to any training molecule">Max train similarity</th>
+    <th title="Within the model's applicability domain?">In domain?</th>
+    <th title="SMILES standardisation result">Status</th></tr>`;
   const body = rows.map(r => `<tr>
-    <td class="smiles">${escapeHtml(r.input_smiles)}</td>
-    <td>${fmt(r.predicted_ppb, 1)}</td>
-    <td>${fmt(r.predicted_fraction_unbound, 3)}</td>
-    <td>${fmt(r.max_training_similarity, 2)}</td>
+    ${structCell(r)}
+    <td class="smiles" title="${escapeHtml(r.input_smiles)}">${escapeHtml(r.input_smiles)}</td>
+    <td class="num">${fmt(r.predicted_ppb, 1)} ${band(r.predicted_ppb)}</td>
+    <td class="num">${fmt(pct(r.predicted_fraction_unbound), 1)}</td>
+    <td class="num">${fmt(r.mw, 1)}</td>
+    <td class="num driver">${fmt(r.logp, 2)}</td>
+    <td class="num">${fmt(r.tpsa, 1)}</td>
+    <td class="num">${fmt(r.max_training_similarity, 2)}</td>
     <td>${domainCell(r)}</td>
     <td>${escapeHtml(r.status)}</td></tr>`).join("");
   $("results").innerHTML = `<table>${head}${body}</table>`;
+  $("toolbar").style.display = "flex";
+  $("legend").style.display = "block";
 }
+
+// ---- CSV export ---------------------------------------------------------------
+// One source of truth for CSV column names and their definitions (the same
+// meanings shown as table tooltips / the on-page legend). ASCII-only so the
+// comment header stays clean in Excel and other CSV readers.
+const COL_DEFS = {
+  input_smiles: "The SMILES you submitted",
+  predicted_ppb: "Predicted percent bound to plasma proteins (0-100)",
+  unbound_percent: "Free, pharmacologically active fraction = 100 - PPB",
+  mw: "Molecular weight (g/mol)",
+  logp: "Calculated lipophilicity (Crippen MolLogP); the dominant PPB driver",
+  tpsa: "Topological polar surface area (Angstrom^2)",
+  max_training_similarity: "Max Tanimoto similarity (0-1) to any training molecule",
+  in_applicability_domain: "Within the applicability domain? predictions outside are unreliable",
+  status: "SMILES standardisation result (ok / error code)",
+};
+
+$("csv").addEventListener("click", () => {
+  const rows = window.__lastRows;
+  if (!rows || !rows.length) return;
+  const cols = Object.keys(COL_DEFS);
+  const cell = (v) => {
+    const s = (v === null || v === undefined) ? "" : String(v);
+    return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
+  };
+  const lines = rows.map(r => {
+    const v = {
+      input_smiles: r.input_smiles,
+      predicted_ppb: r.predicted_ppb == null ? "" : r.predicted_ppb.toFixed(2),
+      unbound_percent: r.predicted_fraction_unbound == null ? "" : (r.predicted_fraction_unbound * 100).toFixed(1),
+      mw: r.mw ?? "", logp: r.logp ?? "", tpsa: r.tpsa ?? "",
+      max_training_similarity: r.max_training_similarity == null ? "" : r.max_training_similarity.toFixed(3),
+      in_applicability_domain: r.in_applicability_domain,
+      status: r.status,
+    };
+    return cols.map(c => cell(v[c])).join(",");
+  });
+  // Prepend '#'-prefixed column definitions (pandas: read_csv(comment='#')).
+  const legend = cols.map(c => `# ${c}: ${COL_DEFS[c]}`).join("\n");
+  const csv = legend + "\n" + cols.join(",") + "\n" + lines.join("\n");
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([csv], { type: "text/csv" }));
+  a.download = "ppb_predictions.csv";
+  a.click();
+  URL.revokeObjectURL(a.href);
+});
 
 function escapeHtml(s) {
   return String(s).replace(/[&<>"']/g, c =>
     ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 }
 </script>
+<script type="text/javascript" src="https://jsme-editor.github.io/dist/jsme/jsme.nocache.js"></script>
 </body>
 </html>

@@ -7,7 +7,7 @@ WORKDIR /app
 COPY serve/requirements-serve.txt /app/requirements-serve.txt
 RUN pip install --no-cache-dir -r /app/requirements-serve.txt
 
-# App code + library + the lean model bundle.
+# App code + library + the served model bundle (lean single XGB hybrid).
 COPY serve/ /app/serve/
 COPY src/ /app/src/
 COPY models/final_xgb_hybrid.joblib /app/models/final_xgb_hybrid.joblib

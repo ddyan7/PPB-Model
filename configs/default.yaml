@@ -13,6 +13,7 @@ data:
   species_col: Species
   species_filter: "Homo sapiens"   # primary scope: human-only (n=1614)
   target_units: percent_bound      # one of: percent_bound | fraction_bound | fraction_unbound
+  ingle_data_csv: data/raw/ppb_usable_dataset.csv
 
 standardisation:
   strip_salts: true          # keep largest organic parent fragment

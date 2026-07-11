@@ -74,7 +74,12 @@ def run(config_path: str) -> None:
     forbidden = {bemis_murcko_scaffold(smiles[i]) or "__acyclic__" for i in np.concatenate([va, te])}
 
     # Non-overlapping, scaffold-safe Ingle compounds + features.
-    raw = pd.read_csv(resolve_path("PPB_Datasets/ppb_usable_dataset.csv"))
+    dcfg = cfg["data"]
+    ingle_data_path = resolve_path(dcfg["ingle_data_csv"])
+    if not ingle_data_path.is_file():
+        raise FileNotFoundError(f"Ingle dataset not found: {ingle_data_path}")
+    raw = pd.read_csv(ingle_data_path)
+
     ppbr_keys = set(ppbr["inchikey"].dropna())
     recs = []
     for r in raw.itertuples(index=False):

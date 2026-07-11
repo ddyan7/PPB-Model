@@ -40,7 +40,11 @@ MEMBERS = [("xgb_hybrid", "xgb", "hybrid"), ("rf_desc", "rf", "descriptors"),
 
 def _load_ingle_safe(cfg, paths, ppbr_keys, forbidden_scaffolds, logger):
     """Return standardised Ingle compounds that are non-overlapping and scaffold-safe."""
-    raw = pd.read_csv(resolve_path("PPB_Datasets/ppb_usable_dataset.csv"))
+    dcfg = cfg["data"]
+    ingle_data_path = resolve_path(dcfg["ingle_data_csv"])
+    if not ingle_data_path.is_file():
+        raise FileNotFoundError(f"Ingle dataset not found: {ingle_data_path}")
+    raw = pd.read_csv(ingle_data_path)
     recs = []
     for r in raw.itertuples(index=False):
         fub = pd.to_numeric(getattr(r, "Fub"), errors="coerce")

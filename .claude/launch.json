@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "ppb-serve",
+      "runtimeExecutable": "C:\\Users\\dandan\\.venvs\\ppb-model\\Scripts\\python.exe",
+      "runtimeArgs": ["-m", "uvicorn", "app:app", "--app-dir", "serve", "--port", "7862"],
+      "port": 7862
+    }
+  ]
+}

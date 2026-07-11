@@ -9,7 +9,7 @@ scripts/
 **/__pycache__/
 *.pyc
 
-# Ship only the lean bundle; exclude the large/alternate ones.
+# Ship only the lean hybrid bundle; exclude the large/alternate ones.
 models/final_consensus.joblib
 models/final_consensus_ppbr_only.joblib
 models/final_xgb_hybrid_ppbr_only.joblib

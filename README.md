@@ -18,6 +18,11 @@ py -3.12 -m venv C:\Users\dandan\.venvs\ppb-model
 C:\Users\dandan\.venvs\ppb-model\Scripts\python -m pip install -r requirements.txt
 ```
 
+Install ppb_model as editable install
+```powershell
+C:\Users\dandan\.venvs\ppb-model\Scripts\python -m pip install -e "C:\Users\dandan\My Drive\Portfolio\Projects\PPB-Model"
+```
+
 Run anything with that interpreter, e.g.:
 ```powershell
 C:\Users\dandan\.venvs\ppb-model\Scripts\python scripts\prepare_data.py --config configs\default.yaml
@@ -102,6 +107,25 @@ Always check the `in_applicability_domain` flag before trusting a prediction.
 ## Reproducibility
 Fixed seeds (`configs/default.yaml`), train-only preprocessing, frozen test set, saved split assignments,
 and a single experiment-results table (`reports/results/`) in CSV/MD/JSON.
+
+## Data sources, licensing & attribution
+The **code** in this repository is released under the **MIT** license. The
+**datasets** carry their own licenses and must be attributed:
+
+- **PPBR_AZ** (training + test) — an AstraZeneca ADME assay deposited in
+  [ChEMBL](https://www.ebi.ac.uk/chembl/), licensed **CC BY-SA 3.0**
+  (DOI `10.6019/CHEMBL3301361`), accessed via
+  [Therapeutics Data Commons](https://tdcommons.ai/single_pred_tasks/adme/).
+  Attribution required; redistributing the *data* triggers ShareAlike.
+- **Ingle et al. 2016** (augmentation/validation) — Ingle, Tornero-Velez,
+  Nichols & Veber, *J. Chem. Inf. Model.* 2016, 56(11):2243–2252; dataset
+  published by the [US EPA](https://catalog.data.gov/dataset/qsars-for-plasma-protein-binding-source-data-and-predictions)
+  (public domain).
+
+The shipped model bundles and the web app contain only *derived* artifacts
+(fitted models, Morgan fingerprints for the applicability-domain check) and
+aggregate metrics — not the raw datasets — so the practical obligation is
+attribution, not ShareAlike redistribution.
 
 ## To run Web Server and FASTAPI
 ```powershell
