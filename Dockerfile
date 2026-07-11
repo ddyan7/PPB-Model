@@ -2,6 +2,15 @@
 # Build context is the project root so we can copy src/ and the lean bundle.
 FROM python:3.12-slim
 
+# RDKit's drawing module links against X11/OpenMP shared libs not in the slim base.
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        libxrender1 \
+        libxext6 \
+        libsm6 \
+        libgomp1 \
+        libexpat1 \
+    && rm -rf /var/lib/apt/lists/*
+
 # Install inference-only Python deps first for better layer caching.
 WORKDIR /app
 COPY serve/requirements-serve.txt /app/requirements-serve.txt
