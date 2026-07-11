@@ -1,0 +1,66 @@
+:root { color-scheme: light dark; --edge: #d0d7de; --muted: #656d76; --accent: #2563eb; }
+* { box-sizing: border-box; }
+body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+       max-width: 1000px; margin: 0 auto; padding: 1.5rem; line-height: 1.5; }
+h1 { margin: 0 0 .25rem; font-size: 1.5rem; }
+p.sub { color: var(--muted); margin: 0 0 1.25rem; }
+textarea { width: 100%; min-height: 130px; font-family: ui-monospace, monospace;
+           font-size: .9rem; padding: .6rem; border: 1px solid var(--edge); border-radius: 8px; }
+.row { display: flex; gap: .6rem; align-items: center; flex-wrap: wrap; margin: .6rem 0 1rem; }
+button { background: var(--accent); color: #fff; border: 0; border-radius: 8px;
+         padding: .55rem 1.1rem; font-size: .95rem; cursor: pointer; }
+button.secondary { background: rgba(37,99,235,.10); color: var(--accent); }
+button:disabled { opacity: .6; cursor: default; }
+.link { background: none; color: var(--accent); padding: 0; font-size: .85rem; text-decoration: underline; }
+.results-wrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: .85rem; margin-top: 1rem; }
+th, td { border: 1px solid var(--edge); padding: .4rem .5rem; text-align: left; white-space: nowrap; }
+th { background: rgba(127,127,127,.08); cursor: help; }
+td.smiles { font-family: ui-monospace, monospace; max-width: 220px;
+            overflow: hidden; text-overflow: ellipsis; }
+td.struct { padding: 2px; }
+td.struct svg { display: block; width: 120px; height: 80px; }
+td.num { text-align: right; font-variant-numeric: tabular-nums; }
+th.driver, td.driver { background: rgba(37,99,235,.09); }
+td.driver { font-weight: 600; color: var(--accent); }
+.pill { display: inline-block; padding: .1rem .5rem; border-radius: 999px; font-size: .74rem; font-weight: 600; }
+.in { background: #dcfce7; color: #166534; }
+.out { background: #fee2e2; color: #991b1b; }
+.bad { background: #fef9c3; color: #854d0e; }
+.b-high { background: #fee2e2; color: #991b1b; }
+.b-mod  { background: #fef9c3; color: #854d0e; }
+.b-low  { background: #dbeafe; color: #1e40af; }
+.note { color: var(--muted); font-size: .82rem; margin-top: 1rem; }
+.err { color: #991b1b; font-size: .9rem; }
+.intro { background: rgba(37,99,235,.06); border: 1px solid var(--edge);
+         border-radius: 10px; padding: .9rem 1.1rem; margin: 0 0 1rem; }
+.intro h2 { font-size: 1rem; margin: 0 0 .4rem; }
+.intro p { margin: .4rem 0; font-size: .9rem; }
+.intro ul { margin: .4rem 0 0; padding-left: 1.2rem; font-size: .88rem; }
+.intro li { margin: .15rem 0; }
+details.card { border: 1px solid var(--edge); border-radius: 10px;
+               padding: .6rem .9rem; margin: 0 0 1.25rem; }
+details.card summary { cursor: pointer; font-weight: 600; font-size: .95rem; }
+/* Blue disclosure triangles so the expandable panels read as clickable. */
+details.card summary::marker,
+.legend summary::marker { color: var(--accent); }
+details.card summary::-webkit-details-marker,
+.legend summary::-webkit-details-marker { color: var(--accent); }
+details.card p { margin: .45rem 0; font-size: .87rem; }
+.perf { margin: .6rem 0 .2rem; }
+.perf h4 { margin: .7rem 0 .35rem; font-size: .8rem; color: var(--muted); font-weight: 600; }
+#parity { margin: .4rem 0 .2rem; }
+svg.parity { width: 100%; max-width: 480px; height: auto; display: block; }
+.legend { margin-top: .7rem; font-size: .8rem; color: var(--muted); }
+.legend summary { cursor: pointer; font-weight: 600; }
+.legend-body { margin-top: .4rem; }
+.legend b { color: inherit; font-weight: 600; }
+.sketcher { margin: 0 0 1rem; }
+#jsme_container { border: 1px solid var(--edge); border-radius: 8px; width: 380px; max-width: 100%; }
+.toolbar { display: flex; gap: .5rem; align-items: center; margin-top: 1rem; }
+footer { margin-top: 2.25rem; border-top: 1px solid var(--edge);
+         padding-top: 1rem; font-size: .8rem; color: var(--muted); }
+footer a { color: var(--accent); }
+.dev { margin: 0 0 .5rem; font-size: .9rem; font-weight: 600; color: inherit; }
+.credits { margin: .4rem 0 0; padding-left: 1.1rem; }
+.credits li { margin: .2rem 0; }

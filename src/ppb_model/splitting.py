@@ -1,7 +1,7 @@
 """Data splitting: Bemis-Murcko scaffold split (primary) and random split (secondary).
 
 The scaffold split assigns *whole scaffold groups* to a single partition, so no
-scaffold — and therefore no near-analogue series — straddles train/val/test. This is
+scaffold - and therefore no near-analogue series - straddles train/val/test. This is
 the leakage-resistant evaluation recommended in the modelling plan; random splitting is
 kept only as a secondary, deliberately optimistic reference.
 """

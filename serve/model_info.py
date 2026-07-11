@@ -26,7 +26,7 @@ MODEL_INFO = {
     # Repo is private for now, so no public "Source code" link. When the repo is
     # made public, restore: "https://github.com/ddyan7/PPB-Model"
     "repo": "",
-    "citation": "PPB Predictor — trained on AstraZeneca PPBR_AZ (via ChEMBL) and Ingle et al. 2016.",
+    "citation": "PPB Predictor - trained on AstraZeneca PPBR_AZ (via ChEMBL) and Ingle et al. 2016.",
     # Code and data carry different licenses; keep them distinct so the MIT tag on
     # the code is not misread as covering the CC BY-SA training data.
     "license_code": "MIT",
@@ -34,12 +34,12 @@ MODEL_INFO = {
     # Rendered as HTML in the page footer (trusted, server-controlled strings).
     "attribution": [
         'Training/test data: AstraZeneca ADME assay in '
-        '<a href="https://www.ebi.ac.uk/chembl/" target="_blank" rel="noopener">ChEMBL</a> — '
+        '<a href="https://www.ebi.ac.uk/chembl/" target="_blank" rel="noopener">ChEMBL</a> - '
         '<a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank" '
         'rel="noopener">CC BY-SA 3.0</a> (DOI 10.6019/CHEMBL3301361), '
         'accessed via Therapeutics Data Commons (PPBR_AZ).',
         'Augmentation data: Ingle, Tornero-Velez, Nichols &amp; Veber, '
-        '<em>J. Chem. Inf. Model.</em> 2016, 56(11):2243–2252 — dataset published by the '
+        '<em>J. Chem. Inf. Model.</em> 2016, 56(11):2243-2252 - dataset published by the '
         '<a href="https://catalog.data.gov/dataset/qsars-for-plasma-protein-binding-source-data-and-predictions" '
         'target="_blank" rel="noopener">US EPA</a> (public domain).',
     ],

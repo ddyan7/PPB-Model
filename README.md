@@ -1,4 +1,4 @@
-# PPB Prediction — Human Plasma Protein Binding on TDCommons PPBR_AZ
+# PPB Prediction - Human Plasma Protein Binding on TDCommons PPBR_AZ
 
 Reproducible machine-learning pipeline for predicting small-molecule human plasma protein binding (PPB)
 from SMILES, built on the AstraZeneca PPBR_AZ dataset. Modelling decisions are driven by a completed
@@ -43,8 +43,8 @@ PPB-Model/
 ```
 
 ## Pipeline stages
-1. Plan (`MODELLING_PLAN.md`) · 2. Clean + audit · 3. Target analysis · 4–5. Leakage-safe splits ·
-6. Features · 7. Baselines · 8. Improved model · 9. Tuning · 10–12. Eval/robustness/ablation ·
+1. Plan (`MODELLING_PLAN.md`) · 2. Clean + audit · 3. Target analysis · 4-5. Leakage-safe splits ·
+6. Features · 7. Baselines · 8. Improved model · 9. Tuning · 10-12. Eval/robustness/ablation ·
 13. Interpretability · 14. Applicability domain / uncertainty · 15. Selection · 16. Outputs + model card.
 
 ## Running the full pipeline (in order)
@@ -82,11 +82,11 @@ folded into training, it can no longer serve as external validation for the depl
 
 ## Headline results (scaffold split, frozen test set)
 - **Target transformation is the decisive lever:** logit vs raw target roughly halves
-  high-binding (≥90%) MAE (≈6.4 → ≈2.8) — the core research-gap finding, isolated in ablation B.
+  high-binding (≥90%) MAE (≈6.4 → ≈2.8) - the core research-gap finding, isolated in ablation B.
 - **Descriptors ≫ fingerprints** on novel scaffolds (Morgan/MACCS R²≈0); MolLogP dominates
   importance, matching the PPB literature.
 - **Proposed hybrid/consensus ≈ tuned baseline on overall MAE** (bootstrap CIs overlap) but with
-  a consistent edge in high-binding MAE and lower variance across 5 repeated splits — honest,
+  a consistent edge in high-binding MAE and lower variance across 5 repeated splits - honest,
   modest improvement, not a complexity win.
 - **Reliability layer works:** in-domain test MAE 6.96 vs out-of-domain 11.21; split-conformal
   90% interval achieves ~93% empirical coverage. Selected model: consensus (see `MODEL_CARD.md`).
@@ -94,8 +94,8 @@ folded into training, it can no longer serve as external validation for the depl
 ## Predicting on new compounds
 Two self-contained bundles carry the fitted cleaner, transformer, training fingerprints, and
 AD threshold, so they predict from raw SMILES end-to-end:
-- `models/final_xgb_hybrid.joblib` — lean single model (**0.5 MB**)
-- `models/final_consensus.joblib` — full ensemble with uncertainty (**17.7 MB**, compressed from 61 MB)
+- `models/final_xgb_hybrid.joblib` - lean single model (**0.5 MB**)
+- `models/final_consensus.joblib` - full ensemble with uncertainty (**17.7 MB**, compressed from 61 MB)
 
 ```powershell
 & $py scripts\predict.py --smiles "CC(=O)Oc1ccccc1C(=O)O"
@@ -112,23 +112,30 @@ and a single experiment-results table (`reports/results/`) in CSV/MD/JSON.
 The **code** in this repository is released under the **MIT** license. The
 **datasets** carry their own licenses and must be attributed:
 
-- **PPBR_AZ** (training + test) — an AstraZeneca ADME assay deposited in
+- **PPBR_AZ** (training + test) - an AstraZeneca ADME assay deposited in
   [ChEMBL](https://www.ebi.ac.uk/chembl/), licensed **CC BY-SA 3.0**
   (DOI `10.6019/CHEMBL3301361`), accessed via
   [Therapeutics Data Commons](https://tdcommons.ai/single_pred_tasks/adme/).
   Attribution required; redistributing the *data* triggers ShareAlike.
-- **Ingle et al. 2016** (augmentation/validation) — Ingle, Tornero-Velez,
-  Nichols & Veber, *J. Chem. Inf. Model.* 2016, 56(11):2243–2252; dataset
+- **Ingle et al. 2016** (augmentation/validation) - Ingle, Tornero-Velez,
+  Nichols & Veber, *J. Chem. Inf. Model.* 2016, 56(11):2243-2252; dataset
   published by the [US EPA](https://catalog.data.gov/dataset/qsars-for-plasma-protein-binding-source-data-and-predictions)
   (public domain).
 
 The shipped model bundles and the web app contain only *derived* artifacts
 (fitted models, Morgan fingerprints for the applicability-domain check) and
-aggregate metrics — not the raw datasets — so the practical obligation is
+aggregate metrics - not the raw datasets - so the practical obligation is
 attribution, not ShareAlike redistribution.
 
-## To run Web Server and FASTAPI
+## To run locally
+
+### API
 ```powershell
-cd serve
-$py -m uvicorn app:app --port 7860
+docker build -t ppb-model .
+docker run --name ppb-model -p 7860:7860 ppb-model
+```
+
+### Frontend
+```powershell
+python -m http.server 8000 --directory docs
 ```

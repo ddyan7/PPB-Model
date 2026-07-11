@@ -1,6 +1,6 @@
 """Stage 6 entry point: precompute and cache raw molecular representations.
 
-Caches per-molecule, structure-only features (leakage-safe — no train/test statistics
+Caches per-molecule, structure-only features (leakage-safe - no train/test statistics
 involved). The train-only descriptor *cleaning/scaling* is fitted later at model time.
 
 Outputs:

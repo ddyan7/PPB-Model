@@ -1,71 +1,84 @@
 # Deploying the PPB Predictor
 
 The app is split: the **static web UI** (`docs/`) is hosted on **GitHub Pages**
-(free) and the **JSON API** (`serve/`) runs as a Docker container. Two config knobs
-wire them together:
+(free) and the **JSON API** (`serve/`) runs as a Docker container on **Azure
+Container Apps**. Two config knobs wire them together:
 
-- `API_BASE` in `docs/index.html` — the API's public URL (e.g. the Azure Container
-  App FQDN). Anything but localhost uses it; localhost uses `http://localhost:7860`.
-- `PPB_ALLOWED_ORIGINS` on the API (comma-separated) — CORS allowlist; set it to the
+- `API_BASE` in `docs/app.js` - the API's public URL (the Azure Container App
+  FQDN). Anything but localhost uses it; localhost uses `http://localhost:7860`.
+- `PPB_ALLOWED_ORIGINS` on the API (comma-separated) - CORS allowlist; set it to the
   Pages origin (`https://ddyan7.github.io`) or your custom domain.
 
 Enable Pages once under **Settings → Pages → Deploy from a branch → `main` / `docs`**.
 
-The container is API-only and listens on port **7860**. Hugging Face Spaces' **Docker
-SDK** can run it for free (16 GB RAM, no credit card); it sleeps after ~48h idle and
-wakes on the next visit.
+The container is API-only and listens on port **7860**.
 
-## What the Space needs
-A Space is its own git repo. It must contain, at the repo root:
+## Container image (CI)
 
-- `README.md` — **with the YAML header** (copy from `README-Spaces.md`; the
-  `sdk: docker` / `app_port: 7860` fields configure the Space).
-- `Dockerfile`
-- `serve/` (API app + `requirements-serve.txt`)
-- `src/` (the `ppb_model` library)
-- `models/final_xgb_hybrid.joblib` (0.5 MB — commit directly, no Git LFS needed)
+Pushes to `main` trigger the **Docker Build & Push** workflow
+(`.github/workflows/docker-build.yml`), which builds `Dockerfile` and pushes the
+image to GHCR:
 
-`.dockerignore` already trims everything else from the image build.
+- `ghcr.io/ddyan7/ppb-model:latest` (default branch)
+- `ghcr.io/ddyan7/ppb-model:sha-<commit>` (every push)
 
-## One-time deploy
+No manual build step is needed; the image is ready in GHCR after CI goes green.
+Make the package **public** (GHCR → package → Package settings → Change visibility)
+so Azure can pull it without a registry credential.
 
-1. Create the Space: https://huggingface.co/new-space → pick **Docker → Blank**,
-   set visibility to **Public** (so it works as a portfolio link).
-2. Clone it and copy the files in:
-   ```bash
-   git clone https://huggingface.co/spaces/<user>/ppb-predictor
-   cd ppb-predictor
-   # from the project root, copy the needed pieces:
-   cp -r ../Dockerfile ../serve ../src .
-   mkdir -p models && cp ../models/final_xgb_hybrid.joblib models/
-   cp ../README-Spaces.md README.md
-   ```
-3. Commit and push — the Space builds the image automatically:
-   ```bash
-   git add -A && git commit -m "Deploy PPB predictor" && git push
-   ```
-4. Watch the **Logs** tab until the build finishes, then open the Space URL.
+## One-time deploy (Azure Container Apps)
 
-## Smoke test the live Space
 ```bash
-curl https://<user>-ppb-predictor.hf.space/api/health
-curl -X POST https://<user>-ppb-predictor.hf.space/api/predict \
+# 1. Log in and create the Container Apps environment.
+az login
+az group create --name ppb-model --location australiasoutheast
+az containerapp env create \
+  --name ppb-env --resource-group ppb-model --location australiasoutheast
+
+# 2. Create the app from the GHCR image. Scale-to-zero keeps idle cost at nil;
+#    the page warms it on load to hide the cold start.
+az containerapp create \
+  --name ppb-model-app --resource-group ppb-model --environment ppb-env \
+  --image ghcr.io/ddyan7/ppb-model:latest \
+  --target-port 7860 --ingress external \
+  --min-replicas 0 --max-replicas 1 \
+  --env-vars PPB_ALLOWED_ORIGINS=https://ddyan7.github.io
+```
+
+`az containerapp create` prints the app FQDN. Copy it into `API_BASE` in
+`docs/app.js`, then commit so Pages serves the updated UI.
+
+## Smoke test the live API
+```bash
+curl https://<fqdn>/api/health
+curl -X POST https://<fqdn>/api/predict \
   -H "Content-Type: application/json" \
   -d '{"smiles": ["CC(=O)Oc1ccccc1C(=O)O"]}'
 ```
 
 ## Updating later
-Push new commits to the Space repo; it rebuilds on every push. To serve the
-augmented consensus bundle instead (~18 MB, adds an uncertainty score, slightly
-better overall accuracy), change `PPB_BUNDLE` in the `Dockerfile` to
-`models/final_consensus.joblib`, copy that `.joblib` in, and re-run
+Push to `main`; CI rebuilds and pushes `:latest` to GHCR. Roll the running app to
+the new image with:
+
+```bash
+az containerapp update \
+  --name ppb-model-app --resource-group ppb-model \
+  --image ghcr.io/ddyan7/ppb-model:latest
+```
+
+(Pin `sha-<commit>` instead of `latest` if you want a reproducible, immutable
+rollout.)
+
+To serve the augmented consensus bundle instead (~18 MB, adds an uncertainty
+score, slightly better overall accuracy), change `PPB_BUNDLE` in the `Dockerfile`
+to `models/final_consensus.joblib`, copy that `.joblib` in, and re-run
 `python scripts/export_parity.py` (after pointing its `BUNDLE` at the same file)
 so the parity plot matches.
 
 The web UI reads two static files from `docs/`, both regenerated by scripts and
 committed:
 
-- `docs/parity_test.json` — `python scripts/export_parity.py`
-- `docs/model_info.json` — `python scripts/export_model_info.py` (run after editing
+- `docs/parity_test.json` - `python scripts/export_parity.py`
+- `docs/model_info.json` - `python scripts/export_model_info.py` (run after editing
   `MODEL_INFO` in `serve/model_info.py`, the canonical source shared with the
   `/api/model-info` endpoint)

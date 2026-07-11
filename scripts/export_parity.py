@@ -3,7 +3,7 @@
 Predictions are recomputed **from the served model bundle** (not from the
 predictions CSV's `predicted_ppb` column), so the plotted performance always
 matches exactly what the web app serves. Only the stable identity columns
-(SMILES, observed value, split) are read from the frozen predictions table —
+(SMILES, observed value, split) are read from the frozen predictions table -
 this makes the export robust to Google-Drive sync churn on the results CSV.
 
 Writes docs/parity_test.json (tiny), which ships with the static web UI on
@@ -62,7 +62,7 @@ def main() -> None:
               for o, p, a, s in zip(y, yhat, in_ad, sim)]
 
     out = {
-        "note": f"Held-out PPBR_AZ scaffold test set — predictions recomputed from the "
+        "note": f"Held-out PPBR_AZ scaffold test set - predictions recomputed from the "
                 f"served bundle ({BUNDLE.name}). "
                 "Point = [observed_ppb, predicted_ppb, in_applicability_domain, "
                 "max_training_similarity].",

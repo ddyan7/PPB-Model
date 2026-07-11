@@ -89,7 +89,7 @@ def run(config_path: str) -> None:
     ax.barh(top["feature"][::-1], top["permutation_importance"][::-1],
             xerr=top["permutation_std"][::-1], color="seagreen")
     ax.set_xlabel("Permutation importance (validation, MAE-based)")
-    ax.set_title("Top 20 descriptors — RF on descriptors (logit target)")
+    ax.set_title("Top 20 descriptors - RF on descriptors (logit target)")
     fig.tight_layout()
     fig.savefig(paths.figures / "stage13_feature_importance.png", dpi=130)
     plt.close(fig)

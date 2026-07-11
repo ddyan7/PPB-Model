@@ -1,4 +1,4 @@
-# Keep the build context (and image) small — copy only what serving needs.
+# Keep the build context (and image) small - copy only what serving needs.
 data/
 reports/
 logs/
@@ -19,6 +19,5 @@ models/tuned_members/
 .git/
 .gitignore
 *.md
-!README-Spaces.md
 environment.yml
 requirements-lock.txt

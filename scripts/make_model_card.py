@@ -127,7 +127,7 @@ correctly identifies the ~42% of external compounds where predictions should not
 ### Head-to-head vs published models (identical held-out compounds)
 On **{h2h.get('n_common_heldout', 'n/a')} identical** Ingle held-out compounds (Dte+T1+T2, PPBR_AZ
 overlaps removed), scored the same way. **Caveat:** Ingle's models are tested *in-distribution*
-(their home data) while ours is *cross-source transfer* — Ingle has a home-field advantage.
+(their home data) while ours is *cross-source transfer* - Ingle has a home-field advantage.
 
 | Model | MAE | R2 | Spearman | High-binding MAE |
 |---|---|---|---|---|
@@ -138,7 +138,7 @@ overlaps removed), scored the same way. **Caveat:** Ingle's models are tested *i
 Ingle's in-distribution models lead on overall MAE/R2 by a modest margin (expected), but **this
 model wins the high-binding region** ({g('Mine_consensus','high_binding_MAE')} vs
 {g('Ingle_consensus','high_binding_MAE')} / {g('Ingle_RF','high_binding_MAE')}) despite the transfer
-handicap — independent confirmation that the logit-transform design generalises. See
+handicap - independent confirmation that the logit-transform design generalises. See
 `reports/results/head_to_head_ingle.csv`.
 """
 
@@ -149,9 +149,9 @@ handicap — independent confirmation that the logit-transform design generalise
             "> **Note:** the external-validation and head-to-head results below describe the "
             "*earlier PPBR_AZ-only* model (preserved as `models/*_ppbr_only.joblib`). Because the "
             "**deployed** model now trains on Ingle data, Ingle can no longer serve as its external "
-            "validation — a fresh third-party dataset would be required.\n\n" + ext_section)
+            "validation - a fresh third-party dataset would be required.\n\n" + ext_section)
 
-    card = f"""# Model Card — Human Plasma Protein Binding (PPB) Predictor
+    card = f"""# Model Card - Human Plasma Protein Binding (PPB) Predictor
 
 ## Intended use
 Estimate human plasma protein binding (percent bound) for small drug-like molecules from
@@ -219,7 +219,7 @@ makes the high-binding region accurate (ablation B).
 Max Tanimoto similarity (Morgan) to the training set; threshold =
 {sel.get('bootstrap', {}) and ad.get('in_domain_fraction', '') and ''}data-driven (5th percentile
 of train self-similarity). In-domain test MAE {ad.get('test_MAE_in_domain', 'n/a')} vs
-out-of-domain {ad.get('test_MAE_out_domain', 'n/a')} — the AD flags less reliable predictions.
+out-of-domain {ad.get('test_MAE_out_domain', 'n/a')} - the AD flags less reliable predictions.
 
 ## Uncertainty method
 Ensemble disagreement (std of member predictions). Correlation with absolute error on test:

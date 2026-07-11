@@ -14,11 +14,11 @@
   },
   "conformal_coverage": "~93% empirical (nominal 90% interval)",
   "repo": "",
-  "citation": "PPB Predictor — trained on AstraZeneca PPBR_AZ (via ChEMBL) and Ingle et al. 2016.",
+  "citation": "PPB Predictor - trained on AstraZeneca PPBR_AZ (via ChEMBL) and Ingle et al. 2016.",
   "license_code": "MIT",
   "license_data": "ChEMBL/AstraZeneca CC BY-SA 3.0 · US EPA (Ingle) public domain",
   "attribution": [
-    "Training/test data: AstraZeneca ADME assay in <a href=\"https://www.ebi.ac.uk/chembl/\" target=\"_blank\" rel=\"noopener\">ChEMBL</a> — <a href=\"https://creativecommons.org/licenses/by-sa/3.0/\" target=\"_blank\" rel=\"noopener\">CC BY-SA 3.0</a> (DOI 10.6019/CHEMBL3301361), accessed via Therapeutics Data Commons (PPBR_AZ).",
-    "Augmentation data: Ingle, Tornero-Velez, Nichols &amp; Veber, <em>J. Chem. Inf. Model.</em> 2016, 56(11):2243–2252 — dataset published by the <a href=\"https://catalog.data.gov/dataset/qsars-for-plasma-protein-binding-source-data-and-predictions\" target=\"_blank\" rel=\"noopener\">US EPA</a> (public domain)."
+    "Training/test data: AstraZeneca ADME assay in <a href=\"https://www.ebi.ac.uk/chembl/\" target=\"_blank\" rel=\"noopener\">ChEMBL</a> - <a href=\"https://creativecommons.org/licenses/by-sa/3.0/\" target=\"_blank\" rel=\"noopener\">CC BY-SA 3.0</a> (DOI 10.6019/CHEMBL3301361), accessed via Therapeutics Data Commons (PPBR_AZ).",
+    "Augmentation data: Ingle, Tornero-Velez, Nichols &amp; Veber, <em>J. Chem. Inf. Model.</em> 2016, 56(11):2243-2252 - dataset published by the <a href=\"https://catalog.data.gov/dataset/qsars-for-plasma-protein-binding-source-data-and-predictions\" target=\"_blank\" rel=\"noopener\">US EPA</a> (public domain)."
   ]
 }

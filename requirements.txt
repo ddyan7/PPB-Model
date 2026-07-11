@@ -1,4 +1,4 @@
-# PPB prediction project — Python 3.12
+# PPB prediction project - Python 3.12
 # Install into a dedicated venv OUTSIDE Google Drive, e.g.:
 #   py -3.12 -m venv C:\Users\<you>\.venvs\ppb-model
 #   C:\Users\<you>\.venvs\ppb-model\Scripts\python -m pip install -r requirements.txt

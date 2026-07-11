@@ -1,7 +1,7 @@
 """FastAPI service for PPB (plasma protein binding) prediction from SMILES.
 
 Serves the lean XGB hybrid bundle plus a small static frontend. All inference is
-delegated to the existing library (`ppb_model.predict`) — this module only wraps
+delegated to the existing library (`ppb_model.predict`) - this module only wraps
 it in an HTTP API.
 
 Run locally (from this folder):
@@ -39,8 +39,8 @@ from model_info import MODEL_INFO  # noqa: E402
 MAX_BATCH = 200
 HERE = Path(__file__).resolve().parent
 
-# Bundle location is env-configurable so the same image works locally and on the
-# Space; default is the lean single hybrid model. The parity plot and MODEL_INFO
+# Bundle location is env-configurable so the same image works locally and in the
+# container; default is the lean single hybrid model. The parity plot and MODEL_INFO
 # metrics are generated from this same bundle so predictions and reported
 # performance stay consistent (see scripts/export_parity.py).
 DEFAULT_BUNDLE = HERE.parent / "models" / "final_xgb_hybrid.joblib"

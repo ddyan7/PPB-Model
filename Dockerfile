@@ -1,7 +1,4 @@
-# PPB prediction web service - image for Hugging Face Spaces (Docker SDK) / Azure
-# Container Apps. Build context is the project root so we can copy src/ and the
-# lean bundle. Multi-stage so the runtime image carries only the installed venv
-# (no pip cache, no build-only apt) - smaller image = faster cold-start pulls.
+# PPB prediction web service
 
 # ---- builder: install inference-only deps into an isolated venv ----
 FROM python:3.12-slim AS builder
@@ -41,11 +38,10 @@ ENV PYTHONPATH=/app/src \
     PPB_BUNDLE=/app/models/final_xgb_hybrid.joblib \
     PORT=7860
 
-# HF Spaces convention: run as non-root uid 1000.
+# Run as non-root uid 1000.
 RUN useradd -m -u 1000 appuser && chown -R appuser /app
 USER appuser
 
 WORKDIR /app/serve
 EXPOSE 7860
-# ${PORT:-7860}: honour a platform-injected PORT, fall back to the Spaces default.
 CMD ["sh", "-c", "uvicorn app:app --host 0.0.0.0 --port ${PORT:-7860}"]
