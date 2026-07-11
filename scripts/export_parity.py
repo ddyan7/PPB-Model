@@ -6,8 +6,8 @@ matches exactly what the web app serves. Only the stable identity columns
 (SMILES, observed value, split) are read from the frozen predictions table —
 this makes the export robust to Google-Drive sync churn on the results CSV.
 
-Writes serve/static/parity_test.json (tiny, ships inside the Docker image while
-the full reports/ tree is excluded).
+Writes docs/parity_test.json (tiny), which ships with the static web UI on
+GitHub Pages alongside docs/index.html.
 
 Run after (re)training or after changing the served bundle:
     python scripts/export_parity.py
@@ -29,7 +29,7 @@ from ppb_model.predict import load_bundle, predict_smiles  # noqa: E402
 SRC = ROOT / "reports" / "results" / "predictions_final.csv"
 # Must match serve/app.py DEFAULT_BUNDLE (the model the app actually serves).
 BUNDLE = ROOT / "models" / "final_xgb_hybrid.joblib"
-DST = ROOT / "serve" / "static" / "parity_test.json"
+DST = ROOT / "docs" / "parity_test.json"
 
 
 def main() -> None:

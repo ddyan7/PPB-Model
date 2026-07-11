@@ -17,8 +17,6 @@ from pathlib import Path
 import numpy as np
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse
-from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
 # Make `ppb_model` importable without requiring PYTHONPATH to be set by hand:
@@ -36,7 +34,6 @@ from ppb_model.predict import load_bundle, predict_smiles  # noqa: E402
 
 MAX_BATCH = 200
 HERE = Path(__file__).resolve().parent
-STATIC_DIR = HERE / "static"
 
 # Static description of the deployed model, surfaced to the UI (point 8/11/12).
 # Numbers come from MODEL_CARD.md (augmented model, PPBR_AZ scaffold test).
@@ -83,9 +80,17 @@ BUNDLE_PATH = Path(os.environ.get("PPB_BUNDLE", str(DEFAULT_BUNDLE)))
 
 app = FastAPI(title="PPB Prediction API", version="1.0.0")
 
+# The web UI is served separately from GitHub Pages, so requests are cross-origin.
+# Restrict to the Pages origin (plus localhost for dev); override in the Container
+# App via PPB_ALLOWED_ORIGINS (comma-separated) for a custom domain.
+_ALLOWED_ORIGINS = [o.strip() for o in os.environ.get(
+    "PPB_ALLOWED_ORIGINS",
+    "https://ddyan7.github.io,http://localhost:8000,http://127.0.0.1:8000",
+).split(",") if o.strip()]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=_ALLOWED_ORIGINS,
     allow_methods=["GET", "POST"],
     allow_headers=["*"],
 )
@@ -214,10 +219,8 @@ def predict(req: PredictRequest) -> dict[str, object]:
     return {"count": len(records), "predictions": records}
 
 
-# Static frontend. Mounted last so it doesn't shadow the /api routes.
-if STATIC_DIR.is_dir():
-    app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
-
-    @app.get("/")
-    def index() -> FileResponse:
-        return FileResponse(str(STATIC_DIR / "index.html"))
+# This service is API-only; the web UI lives on GitHub Pages. Give the root a small
+# JSON pointer so hitting it isn't a bare 404.
+@app.get("/")
+def root() -> dict[str, str]:
+    return {"service": "PPB Prediction API", "docs": "/docs", "health": "/api/health"}

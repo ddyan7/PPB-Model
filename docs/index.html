@@ -157,6 +157,13 @@ const EXAMPLES = [
 
 const $ = (id) => document.getElementById(id);
 
+// The static UI is hosted on GitHub Pages; the API runs in Azure Container Apps.
+// Anything but localhost → the Azure app; localhost → a local uvicorn for dev.
+const API_BASE = /^(localhost|127\.0\.0\.1)$/.test(location.hostname)
+    ? "http://localhost:7860"                       // local dev (uvicorn)
+    : "https://ppb-model-app.salmonrock-114cd24a.australiasoutheast.azurecontainerapps.io";
+const api = (path) => API_BASE + path;
+
 // ---- JSME structure editor (loaded from CDN; see <script src> below) ----------
 function jsmeOnLoad() {
   window.__jsmeReady = true;
@@ -200,7 +207,7 @@ $("example").addEventListener("click", () => { $("input").value = EXAMPLES.join(
 // ---- Model details panel ------------------------------------------------------
 async function loadModelInfo() {
   try {
-    const r = await fetch("/api/model-info");
+    const r = await fetch(api("/api/model-info"));
     if (!r.ok) return;
     const m = await r.json();
     $("modelinfo").innerHTML = `
@@ -208,7 +215,7 @@ async function loadModelInfo() {
       <p><strong>Method:</strong> ${m.method}</p>
       <p><strong>Training data:</strong> ${m.training_data} — ${m.n_train} molecules.</p>
       ${perfChart(m.metrics, m.test_set, m.conformal_coverage)}
-      <p><a href="/docs" target="_blank" rel="noopener">REST API documentation</a>
+      <p><a href="${API_BASE}/docs" target="_blank" rel="noopener">REST API documentation</a>
          · Code: ${m.license_code} · Data: ${m.license_data}</p>`;
     renderParity();  // fills the #parity container from the held-out test points
     const repoLink = /github\.com\/.+/.test(m.repo)
@@ -241,7 +248,7 @@ async function renderParity() {
   if (!el) return;
   let data;
   try {
-    const r = await fetch("/static/parity_test.json");
+    const r = await fetch("parity_test.json");
     if (!r.ok) return;
     data = await r.json();
   } catch (e) { return; }
@@ -315,7 +322,7 @@ $("go").addEventListener("click", async () => {
   $("go").disabled = true;
   $("status").textContent = "Predicting…";
   try {
-    const resp = await fetch("/api/predict", {
+    const resp = await fetch(api("/api/predict"), {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ smiles }),

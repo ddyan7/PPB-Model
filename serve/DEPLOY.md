@@ -1,8 +1,19 @@
-# Deploying the PPB Predictor to Hugging Face Spaces (free)
+# Deploying the PPB Predictor
 
-The app is a Docker container that serves both the JSON API and the web page on
-port **7860**. Hugging Face Spaces' **Docker SDK** runs it for free (16 GB RAM,
-no credit card). It sleeps after ~48h idle and wakes on the next visit.
+The app is split: the **static web UI** (`docs/`) is hosted on **GitHub Pages**
+(free) and the **JSON API** (`serve/`) runs as a Docker container. Two config knobs
+wire them together:
+
+- `API_BASE` in `docs/index.html` — the API's public URL (e.g. the Azure Container
+  App FQDN). Anything but localhost uses it; localhost uses `http://localhost:7860`.
+- `PPB_ALLOWED_ORIGINS` on the API (comma-separated) — CORS allowlist; set it to the
+  Pages origin (`https://ddyan7.github.io`) or your custom domain.
+
+Enable Pages once under **Settings → Pages → Deploy from a branch → `main` / `docs`**.
+
+The container is API-only and listens on port **7860**. Hugging Face Spaces' **Docker
+SDK** can run it for free (16 GB RAM, no credit card); it sleeps after ~48h idle and
+wakes on the next visit.
 
 ## What the Space needs
 A Space is its own git repo. It must contain, at the repo root:
@@ -10,7 +21,7 @@ A Space is its own git repo. It must contain, at the repo root:
 - `README.md` — **with the YAML header** (copy from `README-Spaces.md`; the
   `sdk: docker` / `app_port: 7860` fields configure the Space).
 - `Dockerfile`
-- `serve/` (app + static frontend + `requirements-serve.txt`)
+- `serve/` (API app + `requirements-serve.txt`)
 - `src/` (the `ppb_model` library)
 - `models/final_xgb_hybrid.joblib` (0.5 MB — commit directly, no Git LFS needed)
 

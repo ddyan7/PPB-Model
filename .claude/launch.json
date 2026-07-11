@@ -6,6 +6,12 @@
       "runtimeExecutable": "C:\\Users\\dandan\\.venvs\\ppb-model\\Scripts\\python.exe",
       "runtimeArgs": ["-m", "uvicorn", "app:app", "--app-dir", "serve", "--port", "7862"],
       "port": 7862
+    },
+    {
+      "name": "ppb-docs",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["-m", "http.server", "8000", "--directory", "docs"],
+      "port": 8000
     }
   ]
 }
