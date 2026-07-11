@@ -1,0 +1,24 @@
+{
+  "name": "PPB Predictor (augmented XGBoost hybrid)",
+  "target": "Human plasma protein binding, percent bound (0-100%)",
+  "method": "XGBoost on molecular descriptors + Morgan fingerprints, trained on a logit-transformed target and inverse-mapped to percent to sharpen accuracy in the high-binding region.",
+  "training_data": "AstraZeneca PPBR_AZ (scaffold-train) + scaffold-safe Ingle et al. 2016",
+  "n_train": 2541,
+  "test_set": "PPBR_AZ scaffold test (243 compounds)",
+  "metrics": {
+    "MAE": 7.04,
+    "RMSE": 12.57,
+    "R2": 0.457,
+    "Spearman": 0.784,
+    "high_binding_MAE": 3.16
+  },
+  "conformal_coverage": "~93% empirical (nominal 90% interval)",
+  "repo": "",
+  "citation": "PPB Predictor — trained on AstraZeneca PPBR_AZ (via ChEMBL) and Ingle et al. 2016.",
+  "license_code": "MIT",
+  "license_data": "ChEMBL/AstraZeneca CC BY-SA 3.0 · US EPA (Ingle) public domain",
+  "attribution": [
+    "Training/test data: AstraZeneca ADME assay in <a href=\"https://www.ebi.ac.uk/chembl/\" target=\"_blank\" rel=\"noopener\">ChEMBL</a> — <a href=\"https://creativecommons.org/licenses/by-sa/3.0/\" target=\"_blank\" rel=\"noopener\">CC BY-SA 3.0</a> (DOI 10.6019/CHEMBL3301361), accessed via Therapeutics Data Commons (PPBR_AZ).",
+    "Augmentation data: Ingle, Tornero-Velez, Nichols &amp; Veber, <em>J. Chem. Inf. Model.</em> 2016, 56(11):2243–2252 — dataset published by the <a href=\"https://catalog.data.gov/dataset/qsars-for-plasma-protein-binding-source-data-and-predictions\" target=\"_blank\" rel=\"noopener\">US EPA</a> (public domain)."
+  ]
+}

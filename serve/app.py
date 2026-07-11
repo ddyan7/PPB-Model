@@ -32,44 +32,12 @@ from rdkit.Chem.Draw import rdMolDraw2D  # noqa: E402
 
 from ppb_model.predict import load_bundle, predict_smiles  # noqa: E402
 
+# Canonical model provenance/metrics, shared with the static docs/model_info.json
+# that the Pages frontend fetches (see scripts/export_model_info.py).
+from model_info import MODEL_INFO  # noqa: E402
+
 MAX_BATCH = 200
 HERE = Path(__file__).resolve().parent
-
-# Static description of the deployed model, surfaced to the UI (point 8/11/12).
-# Numbers come from MODEL_CARD.md (augmented model, PPBR_AZ scaffold test).
-MODEL_INFO = {
-    "name": "PPB Predictor (augmented XGBoost hybrid)",
-    "target": "Human plasma protein binding, percent bound (0-100%)",
-    "method": ("XGBoost on molecular descriptors + Morgan fingerprints, trained on a "
-               "logit-transformed target and inverse-mapped to percent to sharpen "
-               "accuracy in the high-binding region."),
-    "training_data": "AstraZeneca PPBR_AZ (scaffold-train) + scaffold-safe Ingle et al. 2016",
-    "n_train": 2541,
-    "test_set": "PPBR_AZ scaffold test (243 compounds)",
-    "metrics": {"MAE": 7.04, "RMSE": 12.57, "R2": 0.457,
-                "Spearman": 0.784, "high_binding_MAE": 3.16},
-    "conformal_coverage": "~93% empirical (nominal 90% interval)",
-    # Repo is private for now, so no public "Source code" link. When the repo is
-    # made public, restore: "https://github.com/ddyan7/PPB-Model"
-    "repo": "",
-    "citation": "PPB Predictor — trained on AstraZeneca PPBR_AZ (via ChEMBL) and Ingle et al. 2016.",
-    # Code and data carry different licenses; keep them distinct so the MIT tag on
-    # the code is not misread as covering the CC BY-SA training data.
-    "license_code": "MIT",
-    "license_data": "ChEMBL/AstraZeneca CC BY-SA 3.0 · US EPA (Ingle) public domain",
-    # Rendered as HTML in the page footer (trusted, server-controlled strings).
-    "attribution": [
-        'Training/test data: AstraZeneca ADME assay in '
-        '<a href="https://www.ebi.ac.uk/chembl/" target="_blank" rel="noopener">ChEMBL</a> — '
-        '<a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank" '
-        'rel="noopener">CC BY-SA 3.0</a> (DOI 10.6019/CHEMBL3301361), '
-        'accessed via Therapeutics Data Commons (PPBR_AZ).',
-        'Augmentation data: Ingle, Tornero-Velez, Nichols &amp; Veber, '
-        '<em>J. Chem. Inf. Model.</em> 2016, 56(11):2243–2252 — dataset published by the '
-        '<a href="https://catalog.data.gov/dataset/qsars-for-plasma-protein-binding-source-data-and-predictions" '
-        'target="_blank" rel="noopener">US EPA</a> (public domain).',
-    ],
-}
 
 # Bundle location is env-configurable so the same image works locally and on the
 # Space; default is the lean single hybrid model. The parity plot and MODEL_INFO
