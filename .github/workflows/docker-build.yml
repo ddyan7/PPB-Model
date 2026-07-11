@@ -45,9 +45,11 @@ jobs:
         with:
           context: .
           file: ./Dockerfile
-          # Build on every event; only push when not a PR.
-          push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+          # zstd layers transfer smaller and decompress faster than gzip on cold
+          # pulls; GHCR (OCI) and the Azure containerd runtime both support them.
+          # Build on every event; only push when not a PR (push= expression).
+          outputs: type=image,compression=zstd,compression-level=19,force-compression=true,push=${{ github.event_name != 'pull_request' }}
