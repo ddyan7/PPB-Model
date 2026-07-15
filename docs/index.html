@@ -33,6 +33,7 @@
     <div id="modelinfo"><p class="sub">Loading model details…</p></div>
   </details>
 
+  <label for="input" class="input-label">One SMILES per line</label>
   <textarea id="input" spellcheck="false" placeholder="CC(=O)Oc1ccccc1C(=O)O"></textarea>
   <div class="row">
     <button id="go">Predict</button>
@@ -61,11 +62,12 @@
   <details class="legend" id="legend" style="display:none">
     <summary>Column guide</summary>
     <div class="legend-body">
-      <b>PPB (% bound)</b>: predicted % bound (0-100); banded Low/Moderate/High (≥90% = high).
-      <b>Unbound (%)</b>: 100 - PPB.
-      <b>MW</b> mol. weight · <b>LogP</b> lipophilicity (key PPB driver) · <b>TPSA</b> polar surface area (Å²).
+      <b>PPB (% bound)</b>: predicted % bound, banded Low: <70%, Moderate: 70%-90%, High: ≥90%.
+      <b>Unbound (%)</b>: 100-PPB.
+      <b>MW</b>: mol. weight. <b>LogP</b>: lipophilicity (key PPB driver). <b>TPSA</b>: polar surface area (Å²).
       <b>Max train similarity</b>: Tanimoto (0-1) to nearest training compound.
-      <b>In domain?</b>: clears the applicability-domain threshold.
+      <b>In domain?</b>: clears the applicability domain threshold.
+      <b>Status</b>: SMILES standardisation result - <code>ok</code> means a prediction was produced, any other value means the input could not be processed and returns no prediction.
     </div>
   </details>
 
