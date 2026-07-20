@@ -13,7 +13,7 @@
     "high_binding_MAE": 3.16
   },
   "conformal_coverage": "~93% empirical (nominal 90% interval)",
-  "repo": "",
+  "repo": "https://github.com/ddyan7/PPB-Model",
   "citation": "PPB Predictor - trained on AstraZeneca PPBR_AZ (via ChEMBL) and Ingle et al. 2016.",
   "license_code": "MIT",
   "license_data": "ChEMBL/AstraZeneca CC BY-SA 3.0 · US EPA (Ingle) public domain",

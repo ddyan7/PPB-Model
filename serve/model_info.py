@@ -23,9 +23,7 @@ MODEL_INFO = {
     "metrics": {"MAE": 7.04, "RMSE": 12.57, "R2": 0.457,
                 "Spearman": 0.784, "high_binding_MAE": 3.16},
     "conformal_coverage": "~93% empirical (nominal 90% interval)",
-    # Repo is private for now, so no public "Source code" link. When the repo is
-    # made public, restore: "https://github.com/ddyan7/PPB-Model"
-    "repo": "",
+    "repo": "https://github.com/ddyan7/PPB-Model",
     "citation": "PPB Predictor - trained on AstraZeneca PPBR_AZ (via ChEMBL) and Ingle et al. 2016.",
     # Code and data carry different licenses; keep them distinct so the MIT tag on
     # the code is not misread as covering the CC BY-SA training data.

@@ -8,9 +8,10 @@ const $ = (id) => document.getElementById(id);
 
 // The static UI is hosted on GitHub Pages; the API runs in Azure Container Apps.
 // Anything but localhost to the Azure app; localhost to a local uvicorn for dev.
-const API_BASE = /^(localhost|127\.0\.0\.1)$/.test(location.hostname)
-    ? "http://localhost:7860"                       // local dev (uvicorn)
-    : "https://ppb-model-app.salmonrock-114cd24a.australiasoutheast.azurecontainerapps.io";
+// const API_BASE = /^(localhost|127\.0\.0\.1)$/.test(location.hostname)
+//     ? "http://localhost:7860"                       // local dev (uvicorn)
+//     : "https://ppb-model-app.salmonrock-114cd24a.australiasoutheast.azurecontainerapps.io";
+const API_BASE = "https://ppb-model-app.salmonrock-114cd24a.australiasoutheast.azurecontainerapps.io";
 const api = (path) => API_BASE + path;
 
 // Warm up the scale-to-zero Container App as early as possible (on page load) so
