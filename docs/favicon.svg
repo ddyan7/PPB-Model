@@ -1,0 +1,12 @@
+<svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Drug capsule pill">
+  <g transform="rotate(-45 16 16)">
+    <!-- left half of the capsule -->
+    <path d="M16,10 H9 A6,6 0 0 0 9,22 H16 Z" fill="#2745cc"/>
+    <!-- right half of the capsule -->
+    <path d="M16,10 H23 A6,6 0 0 1 23,22 H16 Z" fill="#aa10e7"/>
+    <!-- split line between the two halves -->
+    <rect x="15.1" y="10" width="1.8" height="12" fill="#ffffff"/>
+    <!-- glossy highlight on the coloured half -->
+    <rect x="7.5" y="12" width="5.5" height="2.4" rx="1.2" fill="#ffffff" opacity="0.55"/>
+  </g>
+</svg>
