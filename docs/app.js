@@ -180,7 +180,6 @@ $("go").addEventListener("click", async () => {
   goBtn.disabled = true;
   goBtn.classList.add("loading");
   goBtn.textContent = "Predicting…";
-  $("status").textContent = "Predicting…";
   try {
     const resp = await fetch(api("/api/predict"), {
       method: "POST",
