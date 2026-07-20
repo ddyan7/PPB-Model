@@ -176,7 +176,10 @@ $("go").addEventListener("click", async () => {
   clearResults();
   if (!smiles.length) { $("error").textContent = "Enter at least one SMILES."; return; }
 
-  $("go").disabled = true;
+  const goBtn = $("go");
+  goBtn.disabled = true;
+  goBtn.classList.add("loading");
+  goBtn.textContent = "Predicting…";
   $("status").textContent = "Predicting…";
   try {
     const resp = await fetch(api("/api/predict"), {
@@ -197,7 +200,9 @@ $("go").addEventListener("click", async () => {
     $("error").textContent = e.message;
     $("status").textContent = "";
   } finally {
-    $("go").disabled = false;
+    goBtn.disabled = false;
+    goBtn.classList.remove("loading");
+    goBtn.textContent = "Predict";
   }
 });
 
