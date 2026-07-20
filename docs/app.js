@@ -92,7 +92,7 @@ function perfChart(t, testSet, calib) {
     <div class="perf">
       <h4>Predicted vs. observed, log fraction unbound - held-out ${testSet}</h4>
       <div id="parity"></div>
-      <p class="sub">Held-out error (% bound): MAE ${t.MAE}, RMSE ${t.RMSE},
+      <p class="caption cap">Held-out error (% bound): MAE ${t.MAE}, RMSE ${t.RMSE},
          Spearman ρ ${t.Spearman}. High-binding (≥90%) MAE ${t.high_binding_MAE}.
          Calibration ${calib}.</p>
     </div>`;
@@ -162,7 +162,7 @@ async function renderParity() {
     <text class="ax" x="${ml + pw - 140}" y="${mt + ph - 38}">R² = ${m.R2_logfu}</text>
     <text class="ax" x="${ml + pw - 140}" y="${mt + ph - 20}">RMSE = ${m.RMSE_logfu} log units</text>
   </svg>
-  <p class="sub" style="margin-top:.3rem">n=${data.n} held-out test, log₁₀(fu).
+  <p class="caption cap" style="margin-top:.3rem">n=${data.n} held-out test, log₁₀(fu).
      Toward -4 (bottom-left) = more strongly bound. Dashed = perfect prediction. Orange =
      out-of-domain (${m.n_out}, they scatter more, MAE ${m.MAE_out} vs ${m.MAE_in}).
      Fainter = less similar to training.</p>`;

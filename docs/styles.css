@@ -1,8 +1,8 @@
-:root { color-scheme: light dark; --edge: #d0d7de; --muted: #656d76; --accent: #2563eb; }
+:root { color-scheme: light dark; --edge: #424141; --muted: #aa10e7; --accent: #2745cc; --gold: #1a8797; }
 * { box-sizing: border-box; }
 body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
        max-width: 1000px; margin: 0 auto; padding: 1.5rem; line-height: 1.5; }
-h1 { margin: 0 0 .25rem; font-size: 3.0rem; }
+h1 {color: var(--accent); margin: 0 0 .25rem; font-size: 3.0rem; }
 p.sub { color: var(--muted); margin: 0 0 1.25rem; }
 .input-label { display: block; color: var(--muted); font-size: .85rem; margin-bottom: .35rem; }
 textarea { width: 100%; min-height: 130px; font-family: ui-monospace, monospace;
@@ -52,7 +52,7 @@ details.card p { margin: .45rem 0; font-size: .87rem; }
 .perf h4 { margin: .7rem 0 .35rem; font-size: .8rem; color: var(--muted); font-weight: 600; }
 #parity { margin: .4rem 0 .2rem; }
 svg.parity { width: 100%; max-width: 480px; height: auto; display: block; }
-.legend { margin-top: .7rem; font-size: .8rem; color: var(--muted); }
+.legend { margin-top: .7rem; font-size: .8rem;}
 .legend summary { cursor: pointer; font-weight: 600; }
 .legend-body { margin-top: .4rem; }
 .legend b { color: inherit; font-weight: 600; }
@@ -60,7 +60,7 @@ svg.parity { width: 100%; max-width: 480px; height: auto; display: block; }
 #jsme_container { border: 1px solid var(--edge); border-radius: 8px; width: 380px; max-width: 100%; }
 .toolbar { display: flex; gap: .5rem; align-items: center; margin-top: 1rem; }
 footer { margin-top: 2.25rem; border-top: 1px solid var(--edge);
-         padding-top: 1rem; font-size: .8rem; color: var(--muted); }
+         padding-top: 1rem; font-size: .8rem; color: var(--gold); }
 footer a { color: var(--accent); }
 .dev { margin: 0 0 .5rem; font-size: .9rem; font-weight: 600; color: inherit; }
 .credits { margin: .4rem 0 0; padding-left: 1.1rem; }

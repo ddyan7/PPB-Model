@@ -8,10 +8,9 @@
 </head>
 <body>
   <h1>PPB Predictor</h1>
-  <p class="sub">Predict human plasma protein binding (% bound) from a SMILES string.
-     One SMILES per line.</p>
+  <p class="sub">Predict human plasma protein binding (% bound) from a SMILES string.</p>
 
-  <section class="intro">
+  <section class="panel intro">
     <h2>About this model</h2>
     <p>Plasma protein binding (PPB) is the fraction of a drug bound to blood
       proteins. Only the <em>unbound</em> fraction is free to reach its target,
@@ -28,12 +27,14 @@
     </ul>
   </section>
 
-  <details class="card" open>
+  <details class="panel card" open>
     <summary>Model details &amp; performance</summary>
     <div id="modelinfo"><p class="sub">Loading model details…</p></div>
   </details>
 
-  <label for="input" class="input-label">One SMILES per line</label>
+  <section class="panel predict">
+  <h2 class="panel-title">Predict &amp; results</h2>
+  <label for="input" class="input-label">Enter one SMILES per line:</label>
   <textarea id="input" spellcheck="false" placeholder="CC(=O)Oc1ccccc1C(=O)O"></textarea>
   <div class="row">
     <button id="go">Predict</button>
@@ -76,8 +77,9 @@
     outside the model's applicability domain (low similarity to training data) are
     unreliable. Rows with a standardisation error return no prediction.
   </p>
+  </section>
 
-  <footer id="footer">
+  <footer id="footer" class="panel foot">
     <p class="dev">Developed by
       <a href="https://github.com/ddyan7" target="_blank" rel="noopener">Dandan Yan</a>.</p>
     <span id="provenance"></span>
