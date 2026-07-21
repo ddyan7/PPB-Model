@@ -1,31 +1,57 @@
 /* Force the dark theme for every visitor (ignore the OS/browser light preference)
    so the app always renders with the dark canvas and light text. */
-:root { color-scheme: dark; --edge: #424141; --muted: #aa10e7; --accent: #2745cc; --gold: #1a8797; }
+/* Refined dark palette: a dark slate canvas (not pure black), off-white text
+   (not pure #fff), layered surfaces for elevation, and desaturated/lightened
+   accents so nothing glows against the dark background. */
+:root {
+  color-scheme: dark;
+  --bg:          #0F172A;                 /* page canvas - slate 900 */
+  --surface:     #1E293B;                 /* raised panels / cards - slate 800 */
+  --surface-2:   #334155;                 /* nested surfaces / inputs / hover - slate 700 */
+  --edge:        #475569;                 /* borders & dividers - slate 600 */
+  --edge-hi:     #64748B;                 /* light-catch on the top edge of cards - slate 500 */
+  --text:        #F8FAFC;                 /* primary text - slate 50 */
+  --text-2:      #CBD5E1;                 /* secondary text - slate 300 */
+  --muted:       #94A3B8;                 /* muted / label text - slate 400 */
+  --accent:      #38BDF8;                 /* links, headings, accents - sky 400 */
+  --accent-hover:#0EA5E9;                 /* accent hover / active - sky 500 */
+  --accent-tint: rgba(56,189,248,.12);    /* faint accent surfaces */
+  --success:     #22C55E;                 /* green 500 */
+  --warning:     #F59E0B;                 /* amber 500 */
+  --error:       #EF4444;                 /* red 500 */
+  /* Depth: a drop shadow to lift cards off the canvas, plus a 1px inset top
+     highlight so light appears to catch the top edge of each raised surface. */
+  --card-shadow: 0 2px 6px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.06);
+}
 * { box-sizing: border-box; }
 body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-       max-width: 1000px; margin: 0 auto; padding: 1.5rem; line-height: 1.5; }
+       max-width: 1000px; margin: 0 auto; padding: 1.5rem; line-height: 1.5;
+       background: var(--bg); color: var(--text); }
 h1 {color: var(--accent); margin: 0 0 .25rem; font-size: 3.0rem; }
-p.sub { color: var(--muted); margin: 0 0 1.25rem; }
+p.sub { color: var(--text-2); margin: 0 0 1.25rem; }
 .input-label { display: block; color: var(--muted); font-size: .85rem; margin-bottom: .35rem; }
 textarea { width: 100%; min-height: 130px; font-family: ui-monospace, monospace;
-           font-size: .9rem; padding: .6rem; border: 1px solid var(--edge); border-radius: 8px; }
+           font-size: .9rem; padding: .6rem; border: 1px solid var(--edge); border-radius: 8px;
+           background: var(--surface-2); color: var(--text); }
 .row { display: flex; gap: .6rem; align-items: center; flex-wrap: wrap; margin: .6rem 0 1rem; }
-button { background: var(--accent); color: #fff; border: 0; border-radius: 8px;
-         padding: .55rem 1.1rem; font-size: .95rem; cursor: pointer; }
-button.secondary { background: rgba(37,99,235,.10); color: var(--accent); }
+button { background: var(--accent); color: var(--bg); border: 0; border-radius: 8px;
+         padding: .55rem 1.1rem; font-size: .95rem; cursor: pointer; font-weight: 600; }
+button:not(.secondary):not(.link):not(:disabled):hover { background: var(--accent-hover); }
+button.secondary { background: var(--accent-tint); color: var(--accent); font-weight: 500; }
+button.secondary:not(:disabled):hover { background: rgba(56,189,248,.2); }
 button:disabled { opacity: .6; cursor: default; }
 /* Prominent "working" state on the Predict button while a request is in flight:
    a spinner, full opacity (overrides the dimmed disabled look), and a soft pulse. */
 @keyframes ppb-spin { to { transform: rotate(360deg); } }
-@keyframes ppb-pulse { 0%,100% { box-shadow: 0 0 0 0 rgba(39,69,204,.45); }
-                       50% { box-shadow: 0 0 0 6px rgba(39,69,204,0); } }
+@keyframes ppb-pulse { 0%,100% { box-shadow: 0 0 0 0 rgba(56,189,248,.5); }
+                       50% { box-shadow: 0 0 0 6px rgba(56,189,248,0); } }
 button.loading, button.loading:disabled {
   opacity: 1; cursor: progress; padding-left: 2.5rem;
   animation: ppb-pulse 1.3s ease-in-out infinite; }
 button.loading::before {
   content: ""; position: absolute; left: 1.05rem; top: 50%;
   width: .95rem; height: .95rem; margin-top: -.5rem; box-sizing: border-box;
-  border: 2px solid rgba(255,255,255,.4); border-top-color: #fff;
+  border: 2px solid rgba(15,23,42,.35); border-top-color: var(--bg);
   border-radius: 50%; animation: ppb-spin .7s linear infinite; }
 button { position: relative; }
 .link { background: none; color: var(--accent); padding: 0; font-size: .85rem; text-decoration: underline; }
@@ -41,25 +67,29 @@ td.struct { padding: 2px; }
 td.struct svg { display: block; width: 120px; height: 80px;
                 background: #fff; border-radius: 4px; }
 td.num { text-align: right; font-variant-numeric: tabular-nums; }
-th.driver, td.driver { background: rgba(37,99,235,.09); }
+th.driver, td.driver { background: var(--accent-tint); }
 td.driver { font-weight: 600; color: var(--accent); }
 .pill { display: inline-block; padding: .1rem .5rem; border-radius: 999px; font-size: .74rem; font-weight: 600; }
-.in { background: #dcfce7; color: #166534; }
-.out { background: #fee2e2; color: #991b1b; }
-.bad { background: #fef9c3; color: #854d0e; }
-.b-high { background: #fee2e2; color: #991b1b; }
-.b-mod  { background: #fef9c3; color: #854d0e; }
-.b-low  { background: #dbeafe; color: #1e40af; }
+.in { background: rgba(34,197,94,.15); color: var(--success); }
+.out { background: rgba(239,68,68,.15); color: var(--error); }
+.bad { background: rgba(245,158,11,.15); color: var(--warning); }
+.b-high { background: rgba(239,68,68,.15); color: var(--error); }
+.b-mod  { background: rgba(245,158,11,.15); color: var(--warning); }
+.b-low  { background: var(--accent-tint); color: var(--accent); }
 .note { color: var(--muted); font-size: .82rem; margin-top: 1rem; }
-.err { color: #991b1b; font-size: .9rem; }
-.intro { background: rgba(37,99,235,.06); border: 1px solid var(--edge);
+.err { color: var(--error); font-size: .9rem; }
+.intro, .predict { background: var(--surface); border: 1px solid var(--edge);
+         border-top-color: var(--edge-hi); box-shadow: var(--card-shadow);
          border-radius: 10px; padding: .9rem 1.1rem; margin: 0 0 1rem; }
+.predict { margin: 0 0 1.25rem; }
+.predict .panel-title { margin-top: .2rem; }
 .intro h2 { font-size: 1rem; margin: 0 0 .4rem; }
 .intro p { margin: .4rem 0; font-size: .9rem; }
 .intro ul { margin: .4rem 0 0; padding-left: 1.2rem; font-size: .88rem; }
 .intro li { margin: .15rem 0; }
-details.card { border: 1px solid var(--edge); border-radius: 10px;
-               padding: .6rem .9rem; margin: 0 0 1.25rem; }
+details.card { background: var(--surface); border: 1px solid var(--edge);
+               border-top-color: var(--edge-hi); box-shadow: var(--card-shadow);
+               border-radius: 10px; padding: .6rem .9rem; margin: 0 0 1.25rem; }
 details.card summary { cursor: pointer; font-weight: 600; font-size: .95rem; }
 /* Blue disclosure triangles so the expandable panels read as clickable. */
 details.card summary::marker,
@@ -79,7 +109,7 @@ svg.parity { width: 100%; max-width: 480px; height: auto; display: block; }
 #jsme_container { border: 1px solid var(--edge); border-radius: 8px; width: 380px; max-width: 100%; }
 .toolbar { display: flex; gap: .5rem; align-items: center; margin-top: 1rem; }
 footer { margin-top: 2.25rem; border-top: 1px solid var(--edge);
-         padding-top: 1rem; font-size: .8rem; color: var(--gold); }
+         padding-top: 1rem; font-size: .8rem; color: var(--muted); }
 footer a { color: var(--accent); }
 .dev { margin: 0 0 .5rem; font-size: .9rem; font-weight: 600; color: inherit; }
 .credits { margin: .4rem 0 0; padding-left: 1.1rem; }

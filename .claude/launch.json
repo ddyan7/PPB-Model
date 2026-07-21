@@ -10,8 +10,8 @@
     {
       "name": "ppb-docs",
       "runtimeExecutable": "python",
-      "runtimeArgs": ["-m", "http.server", "8000", "--directory", "docs"],
-      "port": 8000
+      "runtimeArgs": ["-m", "http.server", "8011", "--directory", "docs"],
+      "port": 8011
     }
   ]
 }
