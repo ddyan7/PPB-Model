@@ -91,7 +91,7 @@ async function loadModelInfo() {
 function perfChart(t, testSet, calib) {
   return `
     <div class="perf">
-      <h4>Predicted vs. observed, log fraction unbound - held-out ${testSet}</h4>
+      <h4>Predicted vs. Observed Values for the Held-Out PPBR_AZ Scaffold Test Set</h4>
       <div id="parity"></div>
       <p class="caption cap">Held-out error (% bound): MAE ${t.MAE}, RMSE ${t.RMSE},
          Spearman ρ ${t.Spearman}. High-binding (≥90%) MAE ${t.high_binding_MAE}.
