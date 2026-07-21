@@ -11,8 +11,8 @@
   --edge:        #475569;                 /* borders & dividers - slate 600 */
   --edge-hi:     #64748B;                 /* light-catch on the top edge of cards - slate 500 */
   --text:        #F8FAFC;                 /* primary text - slate 50 */
-  --text-2:      #CBD5E1;                 /* secondary text - slate 300 */
-  --muted:       #94A3B8;                 /* muted / label text - slate 400 */
+  --text-2:      #E1E7F0;                 /* secondary text - brightened slate to stay above muted */
+  --muted:       #C2CBD9;                 /* muted / label text - lightened slate for readability */
   --accent:      #38BDF8;                 /* links, headings, accents - sky 400 */
   --accent-hover:#0EA5E9;                 /* accent hover / active - sky 500 */
   --accent-tint: rgba(56,189,248,.12);    /* faint accent surfaces */
