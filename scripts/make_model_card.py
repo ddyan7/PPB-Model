@@ -171,6 +171,11 @@ Species == "Homo sapiens"). After cleaning: **{s2.get('final_rows', 'n/a')} uniq
 Distribution is strongly high-binding: median {s2.get('final_target_summary', {}).get('median', 'n/a')}%,
 {s2.get('final_target_summary', {}).get('pct_ge_90', 'n/a'):.0f}% of compounds >= 90% bound.
 
+Licensed **CC BY-SA 3.0** via its ChEMBL origin (DOI `10.6019/CHEMBL3301361`),
+not a TDC dataset label - TDC lists the redistributed copy as "Not Specified" /
+CC BY 4.0; we attribute under the stricter upstream ChEMBL license. See README
+for the full attribution.
+
 ## Data-cleaning steps
 RDKit parse -> Cleanup -> largest-fragment (salt/mixture) parent -> uncharge -> preserve
 stereochemistry -> canonical SMILES + InChIKey. Duplicate/conflict resolution by InChIKey

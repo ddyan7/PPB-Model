@@ -117,10 +117,16 @@ The **code** in this repository is released under the **MIT** license. The
   (DOI `10.6019/CHEMBL3301361`), accessed via
   [Therapeutics Data Commons](https://tdcommons.ai/single_pred_tasks/adme/).
   Attribution required; redistributing the *data* triggers ShareAlike.
-- **Ingle et al. 2016** (augmentation/validation) - Ingle, Tornero-Velez,
-  Nichols & Veber, *J. Chem. Inf. Model.* 2016, 56(11):2243-2252; dataset
+  The CC BY-SA 3.0 tag comes from the data's true origin (ChEMBL's
+  database-wide license), not from a dataset-specific label; TDC lists the
+  redistributed copy as "Not Specified" / CC BY 4.0. We attribute under the
+  stricter upstream ChEMBL license (SA 3.0) as the conservative choice.
+- **Ingle et al. 2016** (augmentation/validation) - Ingle, Veber, Nichols &
+  Tornero-Velez, *J. Chem. Inf. Model.* 2016, 56(11):2243-2252; dataset
   published by the [US EPA](https://catalog.data.gov/dataset/qsars-for-plasma-protein-binding-source-data-and-predictions)
-  (public domain).
+  (public domain per the
+  [EPA ScienceHub license](https://pasteur.epa.gov/license/sciencehub-license.html):
+  U.S. Government work, no copyright; attribution appreciated but not required).
 
 The shipped model bundles and the web app contain only *derived* artifacts
 (fitted models, Morgan fingerprints for the applicability-domain check) and

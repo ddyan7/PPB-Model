@@ -36,9 +36,11 @@ MODEL_INFO = {
         '<a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank" '
         'rel="noopener">CC BY-SA 3.0</a> (DOI 10.6019/CHEMBL3301361), '
         'accessed via Therapeutics Data Commons (PPBR_AZ).',
-        'Augmentation data: Ingle, Tornero-Velez, Nichols &amp; Veber, '
+        'Augmentation data: Ingle, Veber, Nichols &amp; Tornero-Velez, '
         '<em>J. Chem. Inf. Model.</em> 2016, 56(11):2243-2252 - dataset published by the '
         '<a href="https://catalog.data.gov/dataset/qsars-for-plasma-protein-binding-source-data-and-predictions" '
-        'target="_blank" rel="noopener">US EPA</a> (public domain).',
+        'target="_blank" rel="noopener">US EPA</a> - public domain per the '
+        '<a href="https://pasteur.epa.gov/license/sciencehub-license.html" '
+        'target="_blank" rel="noopener">EPA ScienceHub license</a>.',
     ],
 }
